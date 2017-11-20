@@ -15,6 +15,10 @@
                     @endif
 
                     You are logged in!
+                    <br>
+                    <button class="btn btn-success">Manage Users</button>
+                    <button class="btn btn-primary">Manage Images</button>
+                    <button class="btn btn-warning">Manage Games</button>
                 </div>
             </div>
         </div>
