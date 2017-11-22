@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Jsonable;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,16 @@ use Illuminate\Http\Request;
 |
 */
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+/******************** USERS *********************/
+Route::get('users', 'UserControllerAPI@getUsers');
+Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
+Route::get('users/{id}', 'UserControllerAPI@getUser');
+Route::post('users', 'UserControllerAPI@store');
+Route::put('users/{id}', 'UserControllerAPI@update');
+Route::delete('users/{id}', 'UserControllerAPI@delete');
