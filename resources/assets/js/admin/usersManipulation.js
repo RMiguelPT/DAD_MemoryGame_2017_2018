@@ -38,7 +38,7 @@ const app = new Vue({
           self.showSuccessMessage("User Deleted");                
           axios.get("/api/users")
             .then(function(result){
-              console.table(result.data.data);
+              //console.table(result.data.data);
               self.users = result.data.data;
             })
             .catch(console.log);
@@ -57,7 +57,7 @@ const app = new Vue({
 
           axios.get("/api/users")
             .then(function(result){
-              console.table(result.data.data);
+              //console.table(result.data.data);
               self.users = result.data.data;
             })
             .catch(console.log);
@@ -86,7 +86,7 @@ const app = new Vue({
 
     axios.get("/api/users")
       .then(function(result){
-        console.table(result.data.data);
+        //console.table(result.data.data);
         self.users = result.data.data;
       })
       .catch(console.log);

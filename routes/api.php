@@ -27,3 +27,11 @@ Route::get('users/{id}', 'UserControllerAPI@getUser');
 Route::post('users', 'UserControllerAPI@store');
 Route::put('users/{id}', 'UserControllerAPI@update');
 Route::delete('users/{id}', 'UserControllerAPI@delete');
+
+/******************Login/Logout********************/
+Route::post('login', 'LoginControllerAPI@login');
+Route::middleware('auth:api')->post('logout', 'LoginControllerAPI@logout');
+
+Route::middleware('auth:api')->get('teste', function () {
+    return response()->json(['msg'=>'Só um teste'], 200);
+   });
