@@ -74,7 +74,11 @@
         @yield('content')
     </div>
 
-  @yield('scripts')
+    <!-- Scripts -->
+    <!--
+        <script src="{{ asset('js/app.js') }}"></script>
+    -->
+    <script src="{{ asset('js/usersManipulation.js') }}"></script>
 
 </body>
 </html>
