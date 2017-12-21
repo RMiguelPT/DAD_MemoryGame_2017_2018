@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 37);
+/******/ 	return __webpack_require__(__webpack_require__.s = 36);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -42588,123 +42588,14 @@ exports.clearImmediate = clearImmediate;
 
 /***/ }),
 /* 36 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file.
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
+__webpack_require__(37);
+module.exports = __webpack_require__(38);
 
 
 /***/ }),
 /* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(38);
-module.exports = __webpack_require__(45);
-
-
-/***/ }),
-/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 //import { Vue } from 'vue/types/vue';
@@ -42712,476 +42603,86 @@ module.exports = __webpack_require__(45);
 /*jshint esversion: 6 */
 
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+* First we will load all of this project's JavaScript dependencies which
+* includes Vue and other libraries. It is a great starting point when
+* building robust, powerful web applications using Vue and Laravel.
+  */
 
 __webpack_require__(9);
 
 window.Vue = __webpack_require__(33);
 
-var userList = Vue.component('user-list', __webpack_require__(39));
-var userEdit = Vue.component('user-edit', __webpack_require__(42));
+// const userList = Vue.component('user-list', require('./components/userList.vue'));
+// const userEdit = Vue.component('user-edit', require('./components/userEdit.vue'));
 
-var app = new Vue({
-  el: '#app',
-  data: {
-    title: 'List Users',
-    editingUser: false,
-    showSuccess: false,
-    showFailure: false,
-    successMessage: '',
-    failMessage: '',
-    currentUser: null,
-    users: []
+// const app = new Vue({
+//   el: '#app',
+//   data: {
+//     title: 'List Users',
+//     editingUser: false,
+//     showSuccess: false,
+//     showFailure: false,
+//     successMessage: '',
+//     failMessage: '',
+//     currentUser: null,
+//     users: [],
 
-  },
-  methods: {
-    editUser: function editUser() {
-      this.currentUser = this.$refs.users.currentUser;
-      this.editingUser = true;
-      this.showSuccess = false;
-    },
+//   },
+//   methods: {
+//     editUser: function() {
+//       this.currentUser = this.$refs.users.currentUser;
+//       this.editingUser = true;
+//       this.showSuccess = false;
+//     },
 
-    deleteUser: function deleteUser(user) {
-      var _this = this;
-
-      axios.delete('api/users/' + user.id).then(function (response) {
-        _this.showSuccess = true;
-        _this.successMessage = 'User Deleted';
-        _this.getUsers();
-      });
-    },
-    saveUser: function saveUser() {
-      var _this2 = this;
-
-      this.editingUser = false;
-      axios.put('api/users/' + this.currentUser.id, this.currentUser).then(function (response) {
-        _this2.showSuccess = true;
-        _this2.successMessage = 'User Saved';
-        // Copies response.data.data properties to this.currentUser
-        // without changing this.currentUser reference
-        Object.assign(_this2.currentUser, response.data.data);
-        _this2.currentUser = null;
-        _this2.editingUser = false;
-      });
-    },
-    cancelEdit: function cancelEdit() {
-      var _this3 = this;
-
-      this.showSuccess = false;
-      this.editingUser = false;
-      axios.get('api/users/' + this.currentUser.id).then(function (response) {
-        console.dir(_this3.currentUser);
-        // Copies response.data.data properties to this.currentUser
-        // without changing this.currentUser reference
-        Object.assign(_this3.currentUser, response.data.data);
-        console.dir(_this3.currentUser);
-        _this3.currentUser = null;
-      });
-    },
-    getUsers: function getUsers() {
-      var _this4 = this;
-
-      axios.get('api/users').then(function (response) {
-        _this4.users = response.data.data;
-      });
-    }
-  },
-  mounted: function mounted() {
-    this.getUsers();
-    /*axios.get('api/departments')
-      .then(response=>{this.departments = response.data.data; });*/
-  }
-});
+//     deleteUser: function(user) {
+//       axios.delete('api/users/'+user.id)
+//         .then(response => {
+//           this.showSuccess = true;
+//           this.successMessage = 'User Deleted';
+//           this.getUsers()
+//         })
+//     },
+//     saveUser: function() {
+//       this.editingUser = false;            
+//       axios.put('api/users/'+this.currentUser.id,this.currentUser)
+//         .then(response=>{
+//           this.showSuccess = true;
+//           this.successMessage = 'User Saved';
+//           // Copies response.data.data properties to this.currentUser
+//           // without changing this.currentUser reference
+//           Object.assign(this.currentUser, response.data.data);
+//           this.currentUser = null;
+//           this.editingUser = false;
+//         });
+//     },
+//     cancelEdit: function() {
+//       this.showSuccess = false;
+//       this.editingUser = false;
+//       axios.get('api/users/'+this.currentUser.id)
+//         .then(response=>{
+//           console.dir (this.currentUser);
+//           // Copies response.data.data properties to this.currentUser
+//           // without changing this.currentUser reference
+//           Object.assign(this.currentUser, response.data.data); 
+//           console.dir (this.currentUser);
+//           this.currentUser = null;
+//         });
+//     },
+//     getUsers: function() {
+//       axios.get('api/users')
+//         .then(response=>{this.users = response.data.data;});
+//     }
+//   },
+//   mounted() {
+//     this.getUsers();
+//     /*axios.get('api/departments')
+//       .then(response=>{this.departments = response.data.data; });*/
+//   }
+// });
 
 /***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(36)
-/* script */
-var __vue_script__ = __webpack_require__(40)
-/* template */
-var __vue_template__ = __webpack_require__(41)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/userList.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0228aba0", Component.options)
-  } else {
-    hotAPI.reload("data-v-0228aba0", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            currentUser: {}
-        };
-    },
-    props: ["users"],
-    methods: {
-        editUser: function editUser(user) {
-            this.currentUser = user;
-            this.$emit("edit-user");
-        },
-        deleteUser: function deleteUser(user) {
-            this.$emit("delete-user", user);
-        }
-    }
-});
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table table-striped" }, [
-    _vm._m(0, false, false),
-    _vm._v(" "),
-    _c(
-      "tbody",
-      _vm._l(_vm.users, function(user) {
-        return _c(
-          "tr",
-          { key: user.id, class: { active: _vm.currentUser === user } },
-          [
-            _c("td", [_vm._v(_vm._s(user.name))]),
-            _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(user.email))]),
-            _vm._v(" "),
-            _c("td", [
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-xs btn-primary",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.editUser(user)
-                    }
-                  }
-                },
-                [_vm._v("Edit")]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-xs btn-danger",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.deleteUser(user)
-                    }
-                  }
-                },
-                [_vm._v("Delete")]
-              )
-            ])
-          ]
-        )
-      })
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Name")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Email")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Actions")])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0228aba0", module.exports)
-  }
-}
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(36)
-/* script */
-var __vue_script__ = __webpack_require__(43)
-/* template */
-var __vue_template__ = __webpack_require__(44)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/userEdit.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1170d30c", Component.options)
-  } else {
-    hotAPI.reload("data-v-1170d30c", Component.options)
-' + '  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
-  },
-  props: ['currentUser', 'editingUser'],
-  methods: {
-    saveUser: function saveUser() {},
-    cancelEdit: function cancelEdit() {}
-  }
-});
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "jumbotron" }, [
-    _c("h2", [_vm._v("Edit User")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputName" } }, [_vm._v("Name")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.currentUser.name,
-            expression: "currentUser.name"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "text",
-          name: "name",
-          id: "inputName",
-          placeholder: "Fullname",
-          value: ""
-        },
-        domProps: { value: _vm.currentUser.name },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.currentUser, "name", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c("label", { attrs: { for: "inputEmail" } }, [_vm._v("Email")]),
-      _vm._v(" "),
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.currentUser.email,
-            expression: "currentUser.email"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: {
-          type: "email",
-          name: "email",
-          id: "inputEmail",
-          placeholder: "Email address",
-          value: ""
-        },
-        domProps: { value: _vm.currentUser.email },
-        on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.$set(_vm.currentUser, "email", $event.target.value)
-          }
-        }
-      })
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "form-group" }, [
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-default",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              _vm.saveUser()
-            }
-          }
-        },
-        [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          staticClass: "btn btn-default",
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              _vm.cancelEdit()
-            }
-          }
-        },
-        [_vm._v("Cancel")]
-      )
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1170d30c", module.exports)
-  }
-}
-
-/***/ }),
-/* 45 */
+/* 38 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

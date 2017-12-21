@@ -60,7 +60,16 @@
 
 
 </div>
+
 @endsection
-@section('pagescript')
+
+<!-- @section('pagescript')
     <script src="js/usersManipulation.js"></script>
+    <script src="{{ asset('js/usersManipulation.js') }}"></script>
 @stop  
+ -->
+
+
+ @section('scripts')
+ <script src="{{ asset('js/usersManipulation.js') }}"></script>
+@stop

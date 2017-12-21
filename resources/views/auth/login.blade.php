@@ -8,7 +8,8 @@
                 <div class="panel-heading">Login</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
+                <!-- <form class="form-horizontal" method="POST" action="{{ route('login') }}"> -->
+                    <form class="form-horizontal">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
@@ -66,4 +67,11 @@
         </div>
     </div>
 </div>
+
+
+@endsection
+@section('scripts')
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="js/login.js"></script>
 @endsection
