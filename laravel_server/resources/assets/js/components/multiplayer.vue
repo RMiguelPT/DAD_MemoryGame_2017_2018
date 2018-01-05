@@ -21,7 +21,7 @@
 
 <script type="text/javascript">
     import Lobby from './lobby.vue';
-    import GameTicTocToe from './game-tictactoe.vue';
+    import Game from './game.vue';
 
 	export default {
         data: function(){
@@ -113,7 +113,7 @@
         },
         components: {
             'lobby': Lobby,
-            'game': GameTicTocToe,
+            'game': Game,
         },
         mounted() {
             this.loadLobby();

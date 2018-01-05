@@ -8374,9 +8374,9 @@ button.close {
 }
 
 .board img {
-  width: 80px;
-  height: 80px;
-  margin: 5px;
+  width: 40px;
+  height: 40px;
+  margin: 1px;
   padding: 0;
   border-style: none;
 }

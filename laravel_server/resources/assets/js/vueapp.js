@@ -15,20 +15,20 @@ import VueSocketio from 'vue-socket.io';
 
 Vue.use(VueRouter);
 
-//Vue.use(VueSocketio, 'http://192.168.10.10:8080');
-Vue.use(VueSocketio, 'http://192.168.10.1:8080');
+Vue.use(VueSocketio, 'http://192.168.10.10:8080');
+// Vue.use(VueSocketio, 'http://192.168.10.1:8080');
 
 const user = Vue.component('user', require('./components/user.vue'));
-const department = Vue.component('department', require('./components/departmentList.vue'));
-const singleplayer_game = Vue.component('singlegame', require('./components/singleplayer_tictactoe.vue'));
-const multiplayerGame = Vue.component('multiplayergame', require('./components/multiplayer_tictactoe.vue'));
+// const department = Vue.component('department', require('./components/departmentList.vue'));
+const singleplayer_game = Vue.component('singleplayer', require('./components/singleplayer.vue'));
+const multiplayer_game = Vue.component('multiplayer', require('./components/multiplayer.vue'));
 
 const routes = [
   { path: '/', redirect: '/users' },
   { path: '/users', component: user },
-  { path: '/departments', component: department },
-  { path: '/singletictactoe', component: singleplayer_game },
-  { path: '/multitictactoe', component: multiplayerGame }
+  // { path: '/departments', component: department },
+  { path: '/singleplayer', component: singleplayer_game },
+  { path: '/multiplayer', component: multiplayer_game }
 ];
 
 const router = new VueRouter({

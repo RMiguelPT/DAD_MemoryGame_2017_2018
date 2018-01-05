@@ -3,18 +3,70 @@
         <div>
             <h3 class="text-center">{{ title }}</h3>
             <br>
-            <h2>Current Player : {{ currentPlayer }}</h2>
+            <!-- <h2>Current Player : {{ currentPlayer }}</h2> -->
             <br>
         </div>
         <div class="game-zone-content">       
-            <div class="alert alert-success" v-if="showSuccess">
+            <!-- <div class="alert alert-success" v-if="showSuccess">
                 <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
                 <strong>{{ successMessage }} &nbsp;&nbsp;&nbsp;&nbsp;<a v-show="gameEnded" v-on:click.prevent="restartGame">Restart</a></strong>
+            </div> -->
+            <div class="alert alert-success">
+                <button type="button" class="close-btn" >&times;</button>
+            
             </div>
 
-            <div class="board">
-                <div v-for="(piece, key) of board" >
+            
+                
+
+
+
+                <form action="#" method="get" id="id_form">
+                    <div>
+                        <label for="idLines">Total Lines:</label>
+                        <input type="text" id="idLines" name="Lines" v-model="totLines">
+                        <span class="error" id="msgError_Lines"></span>
+                    </div>
+                    <div>
+                        <label for="idCols">Total Columns:</label>
+                        <input type="text" id="idCols" name="cols" v-model="totCols">
+                        <span class="error" id="msgError_Cols"></span>
+                    </div>
+                    <div>
+                        <a class="btn btn-default" v-if="!gameStarted" v-on:click.prevent="startGame()">Start Game</a>
+                        <a class="btn btn-default" v-if="gameStarted" v-on:click.prevent="stopGame()">Stop Game</a>
+                    </div>
+			    </form>
+		
+                <div class="header" id="gameScore">
+                    <div>
+                        <span>Time:</span>
+                        <span id="timeLabel"> 0 sec</span>
+                    </div>
+                    <div>
+                        <span>Moves:</span>
+                        <span id="movesLabel"> 0</span>
+                    </div>
+                    <div>
+                        <span>Remaining Tiles:</span>
+                        <span id="tilesLabel"> {{totTiles}}</span>
+                    </div>
+                </div>
+
+
+            <div class="board" v-if="gameStarted">
+
+
+                <!-- <div v-for="(piece, key) of board" >
                     <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                </div> -->
+                <div v-for="lines in totLines">
+                    <!-- <div v-for="(piece, key) of board" >
+                        <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(key)">
+                </div> -->
+                    <div v-for="cols in totCols" >
+                            <img v-bind:src="pieceImageURL(0)">
+                    </div>
                 </div>
             </div>
             <hr>
@@ -26,7 +78,69 @@
 	export default {
         data: function(){
 			return {
-                title: 'TicTacToe',
+                //Variables
+                title: 'MemoryGame',
+                totLines: 4,
+                totCols: 4,
+                totTiles: undefined,
+                validGame: 0,
+                remaningTiles: undefined,
+                totMoves: undefined, 
+                gameStatus: 0,
+                gameStarted: false,
+                clickCounter: 0,
+                board: []                
+            }
+        },
+        methods: {
+            validateLines: function(){
+
+            },
+
+            pieceImageURL: function (piece) {
+            var imgSrc = String(piece);
+            return 'img/' + imgSrc + '.png';
+            },
+        
+            startGame: function(){
+                console.log(this.totLines);
+                console.log(this.totCols);
+                console.log("Game Started");
+                this.gameStarted = true;
+            },
+            stopGame: function(){
+                this.gameStarted = false;
+                console.log("Game STOPED");
+            },
+
+            
+
+            
+        },
+        computed:{
+
+           
+        },
+        mounted(){
+            //INIT
+            this.totTiles = this.totLines * this.totCols;
+
+            for (var i=0; i<this.totTiles; i++){
+                this.board.push(0);
+            }
+        }
+    }
+</script>
+
+<style>	
+    
+</style>
+
+<!--<script type="text/javascript">
+	export default {
+        data: function(){
+			return {
+                title: 'MemoryGame',
                 showSuccess: false,
                 showFailure: false,
                 successMessage: '',
@@ -137,4 +251,4 @@
 
 <style>	
     
-</style>
+</style> -->
