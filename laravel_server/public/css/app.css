@@ -8359,25 +8359,22 @@ button.close {
 .board {
   max-width: 276px;
   margin: 0 auto;
-  border-style: solid;
-  border-width: 0px 0 0 0px;
-  border-color: black;
 }
 
 .board div {
   display: inline-block;
-  border-style: solid;
-  border-width: 2px 2px 2px 2px;
   border-color: black;
   margin-left: -2px;
   margin-top: -2px;
 }
 
 .board img {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
   width: 40px;
   height: 40px;
-  margin: 1px;
+  margin: 4px;
   padding: 0;
-  border-style: none;
 }
 

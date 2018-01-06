@@ -10,6 +10,8 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+//import shuffle from 'shuffle-array';
+
 import VueRouter from 'vue-router';
 import VueSocketio from 'vue-socket.io';
 
