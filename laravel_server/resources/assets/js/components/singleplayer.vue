@@ -7,14 +7,22 @@
             <br>
         </div>
         <div class="game-zone-content">
-            <!-- <div class="alert alert-success" v-if="showSuccess">
+            <div class="alert alert-success" v-if="showSuccess">
                 <button type="button" class="close-btn" v-on:click="showSuccess=false">&times;</button>
-                <strong>{{ successMessage }} &nbsp;&nbsp;&nbsp;&nbsp;<a v-show="gameEnded" v-on:click.prevent="restartGame">Restart</a></strong>
-            </div> -->
-            <div class="alert alert-success">
+                <strong>{{ successMessage }} &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+            </div>
+            <div class="alert alert-danger" v-if="showFailure">
+                <button type="button" class="close-btn" v-on:click="showFailure=false">&times;</button>
+                <strong>{{ failMessage }} &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+            </div>
+            <div class="alert alert-primary" v-if="showGameEndedMessage">
+                <button type="button" class="close-btn" v-on:click="showGameEndedMessage=false">&times;</button>
+                <strong>{{ gameEndedMessage }} &nbsp;&nbsp;&nbsp;&nbsp;</strong>
+            </div>
+            <!-- <div class="alert alert-success">
                 <button type="button" class="close-btn">&times;</button>
 
-            </div>
+             --></div>
             <form action="#" method="get" id="id_form">
                 <div>
                     <label for="idLines">Total Lines:</label>
@@ -39,8 +47,12 @@
                         <span id="movesLabel"> 0</span>
                     </div> -->
                 <div>
-                    <span>Remaining Tiles:</span>
-                    <span id="tilesLabel"> {{totTiles}}</span>
+                    <span>Total Tiles:</span>
+                    <span id="totTilesLabel"> {{totTiles}}</span>
+                </div>
+                <div v-if="gameStarted">
+                    <span>Total Tiles:</span>
+                    <span id="tilesLeftLabel"> {{tilesLeft}}</span>
                 </div>
             </div>
 
@@ -65,9 +77,8 @@
                 title: 'MemoryGame',
                 totLines: 4,
                 totCols: 4,
-                //totTiles: undefined,\
                 validGame: 0,
-                remaningTiles: undefined,
+                //remaningTiles: undefined,
                 totMoves: undefined,
                 gameStatus: 0,
                 gameStarted: false,
@@ -76,13 +87,16 @@
                 secondPiece: undefined,
                 timer: undefined,
                 board: [],
+                showSuccess: false,
+                showFailure: false,
+                successMessage: '',
+                failMessage: '',
+                gameEndedMessage: '',
+                showGameEndedMessage: false,
+                
             }
         },
         methods: {
-            validateLines: function () {
-
-            },
-
             pieceImageURL: function (piece) {
                 var imgSrc = String(piece);
                 return 'img/' + imgSrc + '.png';
@@ -92,11 +106,16 @@
                 console.log(this.totLines);
                 console.log(this.totCols);
                 console.log("Game Started");
-                if (this.totTiles % 2 == 0) {
+                if (this.totTiles % 2 == 0 && this.totTiles <= 80) {
                     this.createBoard();
                     this.gameStarted = true;
+                    this.successMessage = "Game started";
+                    this.showSuccess = true;
                 } else {
-                    console.log("Cols or rows invalid");
+                    this.failMessage = "Columns x Rows must be even and less than 80";
+                    this.showFailure = true;
+
+                    //console.log("Cols or rows invalid");
                 }
 
             },
@@ -115,11 +134,25 @@
                         flipped: false,
                         removed: false
                     }
-                    piece1.number = Math.floor(Math.random()*40);
-                    var piece2 = Object.assign({}, piece1); //Copy piece 1 into piece 2
+                    
+                    
+                   
+                    var number = undefined;
+                    
+                    do{
+                        number = Math.floor(Math.random()*40);
+                        
+                    }
+                    while (!this.canBePushed(number));
+                    
+                    piece1.number = number;
+                    var piece2 = Object.assign({}, piece1); //Copy piece data 1 into piece 2           
                    
                     this.board.push(piece1);
                     this.board.push(piece2);
+                   
+                   
+                   
                 }
                 for (var i = 0; i < 40; i++){
                     shuffle(this.board);
@@ -149,8 +182,8 @@
             doMatch: function(){
                    
                     if (this.firstPiece.number==this.secondPiece.number)
-                    {
-                        this.removePieces();
+                    {   
+                        this.timer = setInterval(this.removePieces, 500);
                     }
                     else{
                         
@@ -168,6 +201,18 @@
                 this.secondPiece.removed = true;
                 this.firstPiece = undefined;
                 this.secondPiece = undefined;
+                if(this.timer)
+                {
+                    clearInterval(this.timer);
+                    this.timer=undefined;
+                }
+                if (this.tilesLeft == 0)
+                {
+                    this.gameEnded = true;
+                    this.gameStarted = false;
+                    this.gameEndedMessage = "Game Ended";
+                    this.showGameEndedMessage = true;
+                }
             },
             hidePieces: function(){
                 this.firstPiece.imageToShow = "hidden";
@@ -182,11 +227,24 @@
                     clearInterval(this.timer);
                     this.timer=undefined;
                 }
+            },
+
+            //Check for duplicates
+            canBePushed: function(number){
+                if(this.board.lenght==0)
+                {
+                    return true;
+                }
+
+                for(var piece of this.board)
+                {
+                    if (number==piece.number)
+                    {
+                        return false;
+                    }
+                }
+                return true;
             }
-
-
-
-
         },
         computed: {
             totTiles: function () {
@@ -194,7 +252,19 @@
             },
             maxBoardWith: function () {
                 return this.totCols * 50 + "px";
+            },
+            tilesLeft: function (){
+                var count = this.totTiles;
+
+                for(var piece of this.board){
+                    if(piece.removed == true)
+                    {
+                        count--;
+                    }
+                }
+                return count;
             }
+           
 
 
         },
