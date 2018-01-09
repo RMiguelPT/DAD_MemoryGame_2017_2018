@@ -188,6 +188,22 @@
                     }
                     
             },
+            //Check for duplicates
+            canBePushed: function(number){
+                if(this.board.lenght==0)
+                {
+                    return true;
+                }
+
+                for(var piece of this.board)
+                {
+                    if (number==piece.number)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            },
             removePieces: function(){
                 this.firstPiece.imageToShow = "empty" 
                 this.secondPiece.imageToShow = "empty"  
