@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "shuffle-array": "^1.0.1",
+    "sleep": "^5.1.1",
     "socket.io": "^2.0.4"
   }
 }

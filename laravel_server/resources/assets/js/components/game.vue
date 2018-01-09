@@ -6,11 +6,15 @@
         </div>
         <div class="game-zone-content">       
             <div class="alert" :class="alerttype">
-                <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;<a v-show="game.gameEnded" v-on:click.prevent="closeGame">Close Game</a></strong>
+                <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a v-show="game.gameEnded" v-on:click.prevent="closeGame">Close Game</a></strong>
+                    <div class="btn btn-xs btn-success" v-on:click.prevent="startgame" v-if="game.player2 && !game.gameStarted">Start Game</div>
             </div>
-            <div class="board">
-                <div v-for="(piece, index) of game.board" >
-                    <img v-bind:src="pieceImageURL(piece)" v-on:click="clickPiece(index)">
+            <div class="board" v-if="game.gameStarted">
+                <div v-bind:style="{ width: maxBoardWith }">
+                    <div v-for="(piece, index) of game.board">
+                        <img v-bind:src="pieceImageURL(piece.imageToShow)" v-on:click.prevent="clickPiece(index)">
+                    </div>
                 </div>
             </div>
             <hr>
@@ -32,7 +36,12 @@
                     return 1;
                 } else if (this.game.player2SocketID == this.$parent.socketId) {
                     return 2;
-                } 
+                } else if (this.game.player3SocketID == this.$parent.socketId) {
+                    return 3;
+                }else if (this.game.player4SocketID == this.$parent.socketId) {
+                    return 4;
+                }
+                    
                 return 0;
             },
             ownPlayerName(){
@@ -41,14 +50,23 @@
                     return this.game.player1;
                 if (ownNumber == 2)
                     return this.game.player2;
+                if (ownNumber == 3)
+                    return this.game.player3;
+                if (ownNumber == 4)
+                    return this.game.player4;
+                    
                 return "Unknown";
             },
             adversaryPlayerName(){
                 var ownNumber = this.ownPlayerNumber;
-                if (ownNumber == 1)
-                    return this.game.player2;
-                if (ownNumber == 2)
+                if (this.game.playerTurn == 1)
                     return this.game.player1;
+                if (this.game.playerTurn == 2)
+                    return this.game.player2;
+                if (this.game.playerTurn == 3)
+                    return this.game.player3;
+                if (this.game.playerTurn == 4)
+                    return this.game.player4;
                 return "Unknown";
             },
             message(){
@@ -87,28 +105,37 @@
                     return "alert-info";
                 }
                 
-            }
+            },
+            maxBoardWith: function () {
+                //console.log(this.game.totCols * 50 + "px");
+                return this.game.totCols * 50 + "px";
+            },
         },
         methods: {
             pieceImageURL (pieceNumber) {
+                //console.log(pieceNumber);
                 var imgSrc = String(pieceNumber);
                 return 'img/' + imgSrc + '.png';
             },
             closeGame (){
                 this.$parent.close(this.game);
             },
+            startgame(){
+                this.$emit("start-game", this.game);
+            },
             clickPiece(index){
+                //console.log(this.game);
                 if (!this.game.gameEnded) {
                     if (this.game.playerTurn != this.ownPlayerNumber) {
                         alert("It's not your turn to play");
                     } else {
-                        if (this.game.board[index] == 0) {
-                            this.$parent.play(this.game, index);
+                        if (!this.game.board[index].flipped) {
+                            this.$emit("play", this.game, index);
                         }
                     }
                 }
             }
-        }
+        },
     }
 </script>
 

@@ -13,7 +13,7 @@
             <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
             <lobby :games="lobbyGames" @join-click="join"></lobby>
             <template v-for="game in activeGames">
-                <game :game="game"></game>
+                <game :game="game" @start-game="start" @play="play"></game>
             </template>
         </div>
     </div>
@@ -26,8 +26,8 @@
 	export default {
         data: function(){
 			return {
-                title: 'Multiplayer TicTacToe',
-                currentPlayer: 'Player X',
+                title: 'Multiplayer Memorygame',
+                currentPlayer: 'Player ' + Math.floor(Math.random()*10000),
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
@@ -109,6 +109,9 @@
             },
             close(game){
                 this.$socket.emit('remove_game', {gameID: game.gameID });   
+            },
+            start(game){
+                this.$socket.emit('start_game', {gameID: game.gameID});
             }
         },
         components: {

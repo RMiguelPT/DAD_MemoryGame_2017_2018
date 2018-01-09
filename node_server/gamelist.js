@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-var TicTacToeGame = require('./gamemodel.js');
+var MemoryGame = require('./gamemodel.js');
 
 class GameList {
 	constructor() {
@@ -15,7 +15,7 @@ class GameList {
 
     createGame(playerName, socketID) {
     	this.contadorID = this.contadorID+1;
-    	var game = new TicTacToeGame(this.contadorID, playerName);
+    	var game = new MemoryGame(this.contadorID, playerName);
     	game.player1SocketID = socketID;
     	this.games.set(game.gameID, game);
     	return game;
@@ -25,11 +25,26 @@ class GameList {
     	let game = this.gameByID(gameID);
     	if (game===null) {
     		return null;
-    	}
-    	game.join(playerName);
-    	game.player2SocketID = socketID;
+		}
+		if(game.player1SocketID && !game.player2SocketID && !game.player3SocketID && !game.player4SocketID){
+			game.join(playerName);
+			game.player2SocketID = socketID;
+		}else
+		if(game.player1SocketID && game.player2SocketID && !game.player3SocketID && !game.player4SocketID){
+			game.join(playerName);
+			game.player3SocketID = socketID;
+		}else
+		if(game.player1SocketID && game.player2SocketID && game.player3SocketID && !game.player4SocketID){
+			game.join(playerName);
+			game.player4SocketID = socketID;
+		} 
     	return game;
-    }
+	}
+	startGame(gameID){
+		let game = this.gameByID(gameID);
+		game.startGame();
+		return game;
+	}
 
     removeGame(gameID, socketID) {
     	let game = this.gameByID(gameID);
@@ -50,7 +65,7 @@ class GameList {
     getConnectedGamesOf(socketID) {
     	let games = [];
     	for (var [key, value] of this.games) {
-    		if ((value.player1SocketID == socketID) || (value.player2SocketID == socketID)) {
+    		if ((value.player1SocketID == socketID) || (value.player2SocketID == socketID) || value.player3SocketID || value.player4SocketID) {
     			games.push(value);
     		}
 		}
@@ -61,7 +76,7 @@ class GameList {
     	let games = [];
     	for (var [key, value] of this.games) {
     		if ((!value.gameStarted) && (!value.gameEnded))  {
-    			if ((value.player1SocketID != socketID) && (value.player2SocketID != socketID)) {
+    			if ((value.player1SocketID != socketID) && (value.player2SocketID != socketID)&& (value.player3SocketID != socketID)&& (value.player4SocketID != socketID)) {
     				games.push(value);
     			}
     		}

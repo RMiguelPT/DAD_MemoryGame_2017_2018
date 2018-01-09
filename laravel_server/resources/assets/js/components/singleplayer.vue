@@ -133,9 +133,7 @@
                         imageToShow: "hidden",
                         flipped: false,
                         removed: false
-                    }
-                    
-                    
+                    }                  
                    
                     var number = undefined;
                     
@@ -163,7 +161,7 @@
 
             clickPiece: function(index) {
                 var piece=this.board[index];
-                console.log(this.gameStarted);
+                //console.log(this.gameStarted);
                 if(!this.gameStarted || piece.flipped || piece.removed) return;
                 if (this.clickCounter == 0){
                     piece.flipped=true;
@@ -179,8 +177,7 @@
                     this.doMatch();
                 }               
             },
-            doMatch: function(){
-                   
+            doMatch: function(){                   
                     if (this.firstPiece.number==this.secondPiece.number)
                     {   
                         this.timer = setInterval(this.removePieces, 500);
@@ -188,8 +185,6 @@
                     else{
                         
                         this.timer = setInterval(this.hidePieces, 2000);
-
-                        
                     }
                     
             },
@@ -229,22 +224,7 @@
                 }
             },
 
-            //Check for duplicates
-            canBePushed: function(number){
-                if(this.board.lenght==0)
-                {
-                    return true;
-                }
-
-                for(var piece of this.board)
-                {
-                    if (number==piece.number)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
+            
         },
         computed: {
             totTiles: function () {
