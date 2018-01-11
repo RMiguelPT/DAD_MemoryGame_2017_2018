@@ -47526,7 +47526,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47596,6 +47596,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         my_lobby_games: function my_lobby_games(games) {
             this.lobbyGames = games;
+            //console.log(games[0].players[0])
         },
         invalid_play: function invalid_play(errorObject) {
             if (errorObject.type == 'Invalid_Game') {
@@ -47648,7 +47649,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     if (game.gameID == activeGame.gameID) {
                         Object.assign(activeGame, game);
                         if (activeGame.gameEnded) {
-                            alert("Game " + activeGame.gameID + " has Ended \n The whinner is: " + activeGame.winner);
+                            alert("Game " + activeGame.gameID + " has Ended \n The winner is: " + activeGame.players[activeGame.winner - 1].playerName);
                         }
                         break;
                     }
@@ -47796,7 +47797,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47838,15 +47839,33 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 // Component code (not registered)
 module.exports = {
-    props: ['games'],
-    methods: {
-        join: function join(game) {
-            this.$emit('join-click', game);
-        }
-    }
+	props: ['games'],
+	methods: {
+		join: function join(game) {
+			this.$emit('join-click', game);
+		}
+	},
+	computed: {}
 };
 
 /***/ }),
@@ -47867,24 +47886,30 @@ var render = function() {
           return _c("tr", { key: game.gameID }, [
             _c("td", [_vm._v(_vm._s(game.gameID))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(game.player1))]),
+            _c("td", [_vm._v(" " + _vm._s(game.players[0].playerName))]),
             _vm._v(" "),
-            game.player2 ? _c("td", [_vm._v(_vm._s(game.player2))]) : _vm._e(),
-            _vm._v(" "),
-            !game.player2
-              ? _c("td", [_vm._v("Waiting for player 2")])
+            game.players[1]
+              ? _c("td", [_vm._v(" " + _vm._s(game.players[1].playerName))])
               : _vm._e(),
             _vm._v(" "),
-            game.player3 ? _c("td", [_vm._v(_vm._s(game.player3))]) : _vm._e(),
-            _vm._v(" "),
-            !game.player3
-              ? _c("td", [_vm._v("Waiting for player 3")])
+            !game.players[1]
+              ? _c("td", [_vm._v(" Waiting for player 2")])
               : _vm._e(),
             _vm._v(" "),
-            game.player4 ? _c("td", [_vm._v(_vm._s(game.player4))]) : _vm._e(),
+            game.players[2]
+              ? _c("td", [_vm._v(" " + _vm._s(game.players[2].playerName))])
+              : _vm._e(),
             _vm._v(" "),
-            !game.player4
-              ? _c("td", [_vm._v("Waiting for player 4")])
+            !game.players[2]
+              ? _c("td", [_vm._v(" Waiting for player 3")])
+              : _vm._e(),
+            _vm._v(" "),
+            game.players[3]
+              ? _c("td", [_vm._v(" " + _vm._s(game.players[3].playerName))])
+              : _vm._e(),
+            _vm._v(" "),
+            !game.players[3]
+              ? _c("td", [_vm._v(" Waiting for player 4")])
               : _vm._e(),
             _vm._v(" "),
             _c("td", [
@@ -48097,16 +48122,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         ownScore: function ownScore() {
             switch (this.ownPlayerNumber) {
                 case 1:
-                    return this.game.player1Score;
+                    return this.game.players[0].score;
                     break;
                 case 2:
-                    return this.game.player2Score;
+                    return this.game.players[1].score;
                     break;
                 case 3:
-                    return this.game.player3Score;
+                    return this.game.players[2].score;
                     break;
                 case 4:
-                    return this.game.player4Score;
+                    return this.game.players[3].score;
                     break;
                 default:
                     break;
@@ -48136,19 +48161,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         ownPlayerName: function ownPlayerName() {
             var ownNumber = this.ownPlayerNumber;
-            if (ownNumber == 1) return this.game.player1;
-            if (ownNumber == 2) return this.game.player2;
-            if (ownNumber == 3) return this.game.player3;
-            if (ownNumber == 4) return this.game.player4;
+            if (ownNumber == 1) return this.game.players[0].playerName;
+            if (ownNumber == 2) return this.game.players[1].playerName;
+            if (ownNumber == 3) return this.game.players[2].playerName;
+            if (ownNumber == 4) return this.game.players[3].playerName;
 
             return "Unknown";
         },
         adversaryPlayerName: function adversaryPlayerName() {
             var ownNumber = this.ownPlayerNumber;
-            if (this.game.playerTurn == 1) return this.game.player1;
-            if (this.game.playerTurn == 2) return this.game.player2;
-            if (this.game.playerTurn == 3) return this.game.player3;
-            if (this.game.playerTurn == 4) return this.game.player4;
+            if (this.game.playerTurn == 1) return this.game.players[0].playerName;
+            if (this.game.playerTurn == 2) return this.game.players[1].playerName;
+            if (this.game.playerTurn == 3) return this.game.players[2].playerName;
+            if (this.game.playerTurn == 4) return this.game.players[3].playerName;
             return "Unknown";
         },
         message: function message() {
@@ -48157,10 +48182,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else if (this.game.gameEnded) {
                 if (this.game.winner == this.ownPlayerNumber) {
                     return "Game has ended. You Win.";
-                } else if (this.game.winner == 0) {
-                    return "Game has ended. There was a tie.";
-                }
-                return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
+                }return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
             } else {
                 if (this.game.playerTurn == this.ownPlayerNumber) {
                     return "It's your turn";
@@ -48403,9 +48425,9 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", [
-                  _vm.game.player2 &&
+                  _vm.game.players[1] &&
                   !_vm.game.gameStarted &&
-                  _vm.game.player1 == _vm.ownPlayerName
+                  _vm.game.players[0].playerName == _vm.ownPlayerName
                     ? _c(
                         "div",
                         {
@@ -48434,7 +48456,7 @@ var render = function() {
               _vm._l(_vm.game.board, function(piece, index) {
                 return _c("div", [
                   _c("img", {
-                    attrs: { src: _vm.pieceImageURL(piece.number) },
+                    attrs: { src: _vm.pieceImageURL(piece.imageToShow) },
                     on: {
                       click: function($event) {
                         $event.preventDefault()

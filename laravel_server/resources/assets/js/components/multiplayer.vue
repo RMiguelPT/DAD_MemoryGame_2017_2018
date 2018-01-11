@@ -53,6 +53,7 @@
             },
             my_lobby_games(games){
                 this.lobbyGames = games;
+                //console.log(games[0].players[0])
             },
             invalid_play(errorObject){
                 if (errorObject.type == 'Invalid_Game') {
@@ -77,7 +78,8 @@
                     if (game.gameID == activeGame.gameID) {
                         Object.assign(activeGame, game);
                         if(activeGame.gameEnded){
-                            alert("Game " + activeGame.gameID + " has Ended \n The whinner is: " + activeGame.winner);
+                            alert("Game " + activeGame.gameID + " has Ended \n The winner is: " 
+                            + activeGame.players[activeGame.winner - 1].playerName);
                         }
                         break;
                     }

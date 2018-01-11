@@ -21,7 +21,21 @@ class MemoryGame {
         this.player3LastMatch = undefined;
         this.player4LastMatch = undefined;
 
-        this.playerCount = 1;
+        /*********************/
+        let player = {
+            playerName: player1Name,
+            score: 0,
+            lastMatch: undefined
+        };
+
+        this.players = [];
+        this.playerCount = this.players.push(player);
+        //console.log(this.players);
+        //console.log(this.playerCount);
+        /*********************/
+
+
+        //this.playerCount = 1;
         this.playerTurn = 1;
         this.winner = 0;
         this.board = [];
@@ -37,7 +51,17 @@ class MemoryGame {
     }
 
     join(playerName, socketID) {
-        switch (this.playerCount) {
+
+        if (this.playerCount < 4) {
+            let player = {
+                playerName: playerName,
+                score: 0,
+                lastMatch: undefined
+            };
+            this.playerCount = this.players.push(player);
+
+        }
+        /* switch (this.playerCount) {
             case 1:
                 this.player2 = playerName;
                 this.player2Score = 0;
@@ -56,7 +80,7 @@ class MemoryGame {
 
             default:
                 return;
-        }
+        } */
     }
 
     startGame(totCols, totLines, defaultSize) {
@@ -112,7 +136,7 @@ class MemoryGame {
             removed: false
         };
 
-        let pieceNumber = undefined;
+        let pieceNumber;
 
         do {
             pieceNumber = Math.floor(Math.random() * 40);
@@ -139,9 +163,9 @@ class MemoryGame {
 
     play(playerNumber, index) {
         var piece = this.board[index];
-        console.log(this.gameStarted);
-        console.log("Player Turn: " + this.playerTurn);
-        console.log("Player Number: " + playerNumber);
+        //console.log(this.gameStarted);
+        //console.log("Player Turn: " + this.playerTurn);
+        //console.log("Player Number: " + playerNumber);
         if (playerNumber != this.playerTurn) {
             return false;
         }
@@ -166,40 +190,29 @@ class MemoryGame {
     }
 
     doMatch() {
-        console.log(Date.now());
+        //console.log(Date.now());
         if (this.clickCounter == 2) {
             if (this.firstPiece.number == this.secondPiece.number) {
-                switch (this.playerTurn) {
-                    case 1:
-                        this.player1Score++;
-                        this.player1LastMatch = Date.now();
-                        console.log(this.player1LastMatch);
-                        break;
-                    case 2:
-                        this.player2Score++;
-                        this.player2LastMatch = Date.now();
-                        console.log(this.player2LastMatch);
-                        
-                        break;
-                    case 3:
-                        this.player3Score++;
-                        this.player3LastMatch = Date.now();
-                        break;
-                    case 4:
-                        this.player4Score++;
-                        this.player4LastMatch = Date.now();
-                        break;
-
-                    default:
-                        break;
-                    
+                if (this.playerTurn == 1) {
+                    this.players[0].score++;
+                    this.players[0].lastMatch = Date.now();
+                } else if (this.playerTurn == 2) {
+                    this.players[1].score++;
+                    this.players[1].lastMatch = Date.now();
+                } else if (this.playerTurn == 3 && this.playerCount > 2) {
+                    this.players[2].score++;
+                    this.players[2].lastMatch = Date.now();
+                } else if (this.playerTurn == 4 && this.playerCount > 3) {
+                    this.players[3].score++;
+                    this.players[3].lastMatch = Date.now();
                 }
+
+
                 this.leftPieces = this.leftPieces - 2;
                 sleep(1000); // sleep for one second
                 this.removePieces();
-                if (this.gameIsOver()){
+                if (this.gameIsOver()) {
                     this.gameEnded = true;
-                    this.gameStarted = false;
                     this.setWinner();
                 }
             } else {
@@ -208,30 +221,14 @@ class MemoryGame {
                 this.nextPlayer();
             }
         }
-
     }
+
     nextPlayer() {
-        if (this.playerTurn == 1 && this.player2) {
-            this.playerTurn = 2;
-            return;
-        }
+        this.playerTurn++;
 
-        if (this.playerTurn == 2 && this.player3) {
-            this.playerTurn = 3;
-            return;
-        } else {
+        if (this.playerTurn > this.playerCount) {
             this.playerTurn = 1;
-            return;
         }
-
-        if (this.playerTurn == 3 && this.player4) {
-            this.playerTurn = 4;
-            return;
-        } else {
-            this.playerTurn = 1;
-            return;
-        }
-        if (this.playerTurn == 4) this.playerTurn = 1;
     }
 
     removePieces() {
@@ -253,47 +250,81 @@ class MemoryGame {
         this.clickCounter = 0;
 
     }
-    gameIsOver(){
-        if(this.leftPieces == 0) return true;
+    gameIsOver() {
+        if (this.leftPieces == 0) return true;
         else return false;
 
     }
 
-    setWinner(){
+    setWinner() {
+        let maxScore = this.getMaxScore();
+        console.log("maxScore: "+ maxScore);
 
-        if (this.player1Score > this.player2Score){
-            this.winner = 1;
-        }
-        if (this.player2Score > this.player1Score){
-            this.winner = 2;
+        let arrayOfDraws = [];
+        arrayOfDraws = this.getArrayOfDraws(maxScore);
+        console.log("arrayOfDraws: " + arrayOfDraws);
+
+        if (arrayOfDraws.length == 1) {
+            this.winner = arrayOfDraws[0] + 1;
+        } else {
+            this.winner = this.getIndexOfMinTime(arrayOfDraws);
         }
 
-        if(this.player1LastMatch < this.player2LastMatch){
-                this.winner = 1;            
-        }
-        else if(this.player2LastMatch < this.player1LastMatch ){
-                this.winner = 2;
+        // this.winner = this.getIndexOfMaxScore();
 
-
-
-        /* if(this.player1LastMatch < this.player2LastMatch && this.player1LastMatch < this.player3LastMatch &&
-            this.player1LastMatch < this.player4LastMatch){
-                this.winner = 1;            
-        }
-        else if(this.player2LastMatch < this.player1LastMatch && this.player2LastMatch < this.player3LastMatch && 
-            this.player2LastMatch < this.player4LastMatch){
-                this.winner = 2; */
-        /* }else if(this.player3LastMatch < this.player1LastMatch && this.player3LastMatch < this.player2LastMatch && 
-            this.player3LastMatch < this.player4LastMatch){
-                this.winner = 3;
-        }
-        else if(this.player4LastMatch < this.player1LastMatch && this.player4LastMatch < this.player2LastMatch && 
-            this.player4LastMatch < this.player3LastMatch){
-                this.winner = 4; */
-        }
     }
 
-  
+    getIndexOfMaxScore() {
+        let index = 0;
+        let value = 0;
+        for (let i = 0; i < this.playerCount; i++) {
+            //console.log(this.players[i].score);
+            if (this.players[i].score > value) {
+                value = this.players[i].score;
+                index = i + 1;
+            }
+        }
+        //console.log("The winner is: " + index);
+        return index;
+
+    }
+    getIndexOfMinTime(arrayOfDraws) {
+        let minTime = Date.now();
+        let winner = 0;
+
+        for (let i = 0; i < arrayOfDraws.length; i++) {
+            console.log("Player " + (arrayOfDraws[i] +1) + "last match: " + this.players[arrayOfDraws[i]].lastMatch);
+            if (this.players[arrayOfDraws[i]].lastMatch < minTime) {
+                console.log(arrayOfDraws[i]);
+                winner = arrayOfDraws[i] + 1;
+            }
+        }
+        return winner;
+
+    }
+    getArrayOfDraws(maxScore) {
+        let arrayOfDraws = [];
+
+        for (let i = 0; i < this.playerCount; i++) {
+            if (this.players[i].score == maxScore) {
+                arrayOfDraws.push(i);
+            }
+        }
+        return arrayOfDraws;
+    }
+    getMaxScore() {
+        let maxScore = 0;
+        for (let i = 0; i < this.playerCount; i++) {
+            if (this.players[i].score > maxScore) {
+                maxScore = this.players[i].score;
+            }
+        }
+        return maxScore;
+    }
+
+
+
+
 }
 
 module.exports = MemoryGame;

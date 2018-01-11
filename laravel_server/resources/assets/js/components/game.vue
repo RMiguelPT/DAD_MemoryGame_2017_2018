@@ -27,7 +27,7 @@
                         <span class="error" id="msgError_Cols"></span>
                     </div>
                     <div>
-                        <div class="btn btn-xs btn-success" v-on:click.prevent="startgame" v-if="game.player2 && !game.gameStarted && game.player1==ownPlayerName">Start Game</div>
+                        <div class="btn btn-xs btn-success" v-on:click.prevent="startgame" v-if="game.players[1] && !game.gameStarted && game.players[0].playerName==ownPlayerName">Start Game</div>
                         <!-- <a class="btn btn-default" v-if="!gameStarted" v-on:click.prevent="startGame()">Start Game</a>
                         <a class="btn btn-default" v-if="gameStarted" v-on:click.prevent="stopGame()">Stop Game</a> -->
                     </div>
@@ -37,7 +37,7 @@
             <div class="board" v-if="game.gameStarted">
                 <div v-bind:style="{ width: maxBoardWith }">
                     <div v-for="(piece, index) of game.board">
-                        <img v-bind:src="pieceImageURL(piece.number)" v-on:click.prevent="clickPiece(index)">
+                        <img v-bind:src="pieceImageURL(piece.imageToShow)" v-on:click.prevent="clickPiece(index)">
                     </div>
                 </div>
             </div>
@@ -59,16 +59,16 @@
             ownScore(){
                 switch (this.ownPlayerNumber) {
                     case 1:
-                        return this.game.player1Score;
+                        return this.game.players[0].score;
                         break;
                     case 2:
-                        return this.game.player2Score;
+                        return this.game.players[1].score;
                         break;
                     case 3:
-                        return this.game.player3Score;
+                        return this.game.players[2].score;
                         break;
                     case 4:
-                        return this.game.player4Score;
+                        return this.game.players[3].score;
                         break;
                     default:
                         break;
@@ -105,26 +105,26 @@
             ownPlayerName() {
                 var ownNumber = this.ownPlayerNumber;
                 if (ownNumber == 1)
-                    return this.game.player1;
+                    return this.game.players[0].playerName;
                 if (ownNumber == 2)
-                    return this.game.player2;
+                    return this.game.players[1].playerName;
                 if (ownNumber == 3)
-                    return this.game.player3;
+                    return this.game.players[2].playerName;
                 if (ownNumber == 4)
-                    return this.game.player4;
+                    return this.game.players[3].playerName;
 
                 return "Unknown";
             },
             adversaryPlayerName() {
                 var ownNumber = this.ownPlayerNumber;
                 if (this.game.playerTurn == 1)
-                    return this.game.player1;
+                    return this.game.players[0].playerName;
                 if (this.game.playerTurn == 2)
-                    return this.game.player2;
+                    return this.game.players[1].playerName;
                 if (this.game.playerTurn == 3)
-                    return this.game.player3;
+                    return this.game.players[2].playerName;
                 if (this.game.playerTurn == 4)
-                    return this.game.player4;
+                    return this.game.players[3].playerName;
                 return "Unknown";
             },
             message() {
@@ -133,10 +133,7 @@
                 } else if (this.game.gameEnded) {
                     if (this.game.winner == this.ownPlayerNumber) {
                         return "Game has ended. You Win.";
-                    } else if (this.game.winner == 0) {
-                        return "Game has ended. There was a tie.";
-                    }
-                    return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
+                    }return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
                 } else {
                     if (this.game.playerTurn == this.ownPlayerNumber) {
                         return "It's your turn";

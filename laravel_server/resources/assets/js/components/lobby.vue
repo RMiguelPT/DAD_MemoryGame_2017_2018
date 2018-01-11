@@ -14,6 +14,23 @@
 			<tbody>
 				<tr v-for="game in games"  :key="game.gameID">
 					<td>{{ game.gameID }}</td>
+					<td> {{game.players[0].playerName}}</td>
+
+					<td v-if="game.players[1]"> {{game.players[1].playerName}}</td>
+					<td v-if="!game.players[1]"> Waiting for player 2</td>
+
+					<td v-if="game.players[2]"> {{game.players[2].playerName}}</td>
+					<td v-if="!game.players[2]"> Waiting for player 3</td>
+
+					<td v-if="game.players[3]"> {{game.players[3].playerName}}</td>
+					<td v-if="!game.players[3]"> Waiting for player 4</td>
+
+					<!-- <td v-for="(player, key) in game.players"></td> -->
+					<td>
+						<a class="btn btn-xs btn-primary" v-on:click.prevent="join(game)">Join</a>
+					</td>
+
+					<!-- <td>{{ game.gameID }}</td>
 					<td>{{ game.player1 }}</td>
 					<td v-if="game.player2">{{ game.player2 }}</td>
 					<td v-if="!game.player2">Waiting for player 2</td>
@@ -23,7 +40,7 @@
 					<td v-if="!game.player4">Waiting for player 4</td>
 					<td>
 						<a class="btn btn-xs btn-primary" v-on:click.prevent="join(game)">Join</a>
-					</td>
+					</td> -->
 				</tr>
 			</tbody>
 		</table>
@@ -38,8 +55,11 @@
         methods: {
             join(game) {
             	this.$emit('join-click', game);
-            },		
-        },		
+			},		
+		},	
+		computed: {
+			
+		}	
 	}
 </script>
 

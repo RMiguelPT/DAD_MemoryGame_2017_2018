@@ -90,7 +90,7 @@ io.on('connection', function (socket) {
 			});
 			return;
 		}
-		console.log("Player number: " + numPlayer + "has made a moove!");
+		//console.log("Player number: " + numPlayer + "has made a moove!");
 				
 		if (game.play(numPlayer, data.index)) {			
 			io.to(game.gameID).emit('game_changed', game);
