@@ -76,6 +76,9 @@
                 for (var activeGame of this. activeGames) {
                     if (game.gameID == activeGame.gameID) {
                         Object.assign(activeGame, game);
+                        if(activeGame.gameEnded){
+                            alert("Game " + activeGame.gameID + " has Ended \n The whinner is: " + activeGame.winner);
+                        }
                         break;
                     }
                 }
@@ -111,7 +114,7 @@
                 this.$socket.emit('remove_game', {gameID: game.gameID });   
             },
             start(game){
-                this.$socket.emit('start_game', {gameID: game.gameID});
+                this.$socket.emit('start_game', {gameID: game.gameID, totCols: game.totCols, totLines: game.totLines, defaultSize: game.defaultSize});
             }
         },
         components: {

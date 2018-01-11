@@ -45,7 +45,7 @@ io.on('connection', function (socket) {
 	});
 
 	socket.on('start_game', function (data) {
-		let game = games.startGame(data.gameID);
+		let game = games.startGame(data.gameID, data.totCols, data.totLines, data.defaultSize);
 		io.to(game.gameID).emit('game_started');
 		io.to(game.gameID).emit('my_active_games_changed');
 	});

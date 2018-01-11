@@ -47526,7 +47526,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47647,6 +47647,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                     if (game.gameID == activeGame.gameID) {
                         Object.assign(activeGame, game);
+                        if (activeGame.gameEnded) {
+                            alert("Game " + activeGame.gameID + " has Ended \n The whinner is: " + activeGame.winner);
+                        }
                         break;
                     }
                 }
@@ -47695,7 +47698,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$socket.emit('remove_game', { gameID: game.gameID });
         },
         start: function start(game) {
-            this.$socket.emit('start_game', { gameID: game.gameID });
+            this.$socket.emit('start_game', { gameID: game.gameID, totCols: game.totCols, totLines: game.totLines, defaultSize: game.defaultSize });
         }
     },
     components: {
@@ -48022,7 +48025,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.gameseparator[data-v-7c293f89]{\n    border-style: solid;\n    border-width: 2px 0 0 0;\n    border-color: black;\n}\n", ""]);
+exports.push([module.i, "\n.gameseparator[data-v-7c293f89] {\n    border-style: solid;\n    border-width: 2px 0 0 0;\n    border-color: black;\n}\n", ""]);
 
 // exports
 
@@ -48057,13 +48060,67 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game'],
     data: function data() {
-        return {};
+        return {
+            colsNumber: undefined,
+            linesNumber: undefined
+        };
     },
     computed: {
+        ownScore: function ownScore() {
+            switch (this.ownPlayerNumber) {
+                case 1:
+                    return this.game.player1Score;
+                    break;
+                case 2:
+                    return this.game.player2Score;
+                    break;
+                case 3:
+                    return this.game.player3Score;
+                    break;
+                case 4:
+                    return this.game.player4Score;
+                    break;
+                default:
+                    break;
+            }
+        },
+        disableForm: function disableForm() {
+            if (this.game.defaultSize || this.game.gameStarted) return true;else return false;
+        },
+        totTiles: function totTiles() {
+            return this.game.totCols * this.game.totLines;
+        },
+        isValidGame: function isValidGame() {
+            if (this.totTiles % 2 == 0 && this.totTiles <= 80) return true;else return false;
+        },
         ownPlayerNumber: function ownPlayerNumber() {
             if (this.game.player1SocketID == this.$parent.socketId) {
                 return 1;
@@ -48183,7 +48240,12 @@ var render = function() {
     _c("div", { staticClass: "game-zone-content" }, [
       _c("div", { staticClass: "alert", class: _vm.alerttype }, [
         _c("strong", [
-          _vm._v(_vm._s(_vm.message) + "     \n                    "),
+          _vm._v(
+            _vm._s(_vm.message) +
+              "     \n                Your score: " +
+              _vm._s(_vm.ownScore) +
+              "\n                "
+          ),
           _c(
             "a",
             {
@@ -48206,19 +48268,160 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm.game.player2 && !_vm.game.gameStarted
+        _vm.game.player1 == _vm.ownPlayerName
           ? _c(
-              "div",
-              {
-                staticClass: "btn btn-xs btn-success",
-                on: {
-                  click: function($event) {
-                    $event.preventDefault()
-                    _vm.startgame($event)
-                  }
-                }
-              },
-              [_vm._v("Start Game")]
+              "form",
+              { attrs: { action: "#", method: "get", id: "id_form" } },
+              [
+                _c("div", [
+                  _c("label", { attrs: { for: "idLines" } }, [
+                    _vm._v("Total Lines:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.game.totLines,
+                        expression: "game.totLines"
+                      }
+                    ],
+                    attrs: {
+                      type: "text",
+                      id: "idLines",
+                      name: "Lines",
+                      disabled: _vm.disableForm
+                    },
+                    domProps: { value: _vm.game.totLines },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.game, "totLines", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    staticClass: "error",
+                    attrs: { id: "msgError_Lines" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("label", { attrs: { for: "idCols" } }, [
+                    _vm._v("Total Columns:")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.game.totCols,
+                        expression: "game.totCols"
+                      }
+                    ],
+                    attrs: {
+                      type: "text",
+                      id: "idCols",
+                      name: "cols",
+                      disabled: _vm.disableForm
+                    },
+                    domProps: { value: _vm.game.totCols },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.game, "totCols", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    staticClass: "error",
+                    attrs: { id: "msgError_Cols" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _c("label", { attrs: { for: "defaultSize" } }, [
+                    _vm._v("Default size?")
+                  ]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.game.defaultSize,
+                        expression: "game.defaultSize"
+                      }
+                    ],
+                    attrs: {
+                      type: "checkbox",
+                      id: "defaultSize",
+                      name: "size",
+                      disabled: _vm.game.gameStarted
+                    },
+                    domProps: {
+                      checked: Array.isArray(_vm.game.defaultSize)
+                        ? _vm._i(_vm.game.defaultSize, null) > -1
+                        : _vm.game.defaultSize
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.game.defaultSize,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              (_vm.game.defaultSize = $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              (_vm.game.defaultSize = $$a
+                                .slice(0, $$i)
+                                .concat($$a.slice($$i + 1)))
+                          }
+                        } else {
+                          _vm.$set(_vm.game, "defaultSize", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", {
+                    staticClass: "error",
+                    attrs: { id: "msgError_Cols" }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", [
+                  _vm.game.player2 &&
+                  !_vm.game.gameStarted &&
+                  _vm.game.player1 == _vm.ownPlayerName
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "btn btn-xs btn-success",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.startgame($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Start Game")]
+                      )
+                    : _vm._e()
+                ])
+              ]
             )
           : _vm._e()
       ]),
@@ -48231,7 +48434,7 @@ var render = function() {
               _vm._l(_vm.game.board, function(piece, index) {
                 return _c("div", [
                   _c("img", {
-                    attrs: { src: _vm.pieceImageURL(piece.imageToShow) },
+                    attrs: { src: _vm.pieceImageURL(piece.number) },
                     on: {
                       click: function($event) {
                         $event.preventDefault()

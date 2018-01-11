@@ -40,9 +40,9 @@ class GameList {
 		} 
     	return game;
 	}
-	startGame(gameID){
+	startGame(gameID, totCols, totLines, defaultSize){
 		let game = this.gameByID(gameID);
-		game.startGame();
+		game.startGame(totCols, totLines, defaultSize);
 		return game;
 	}
 
