@@ -120,4 +120,10 @@ io.on('connection', function (socket) {
 		socket.emit('my_lobby_games', my_games);
 	});
 
+	socket.on("sendMessage", function (data){
+		console.log("Message received on server");
+		io.to(data.gameID).emit("message_received", data);
+	});
+	
+
 });

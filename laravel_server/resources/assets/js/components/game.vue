@@ -5,9 +5,8 @@
             <br>
         </div>
         <div class="game-zone-content">
-            <div class="alert" :class="alerttype">
-                <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp;
-                    Your score: {{ownScore}}
+            <div class="alert text-center" :class="alerttype">
+                <strong>{{ message }} &nbsp;&nbsp;&nbsp;&nbsp; Your score: {{ownScore}}
                     <a v-show="game.gameEnded" v-on:click.prevent="closeGame">Close Game</a>
                 </strong>
                 <form action="#" method="get" id="id_form" v-if="game.player1==ownPlayerName">
@@ -34,11 +33,39 @@
                 </form>
                 <!-- <div class="btn btn-xs btn-success" v-on:click.prevent="startgame" v-if="game.player2 && !game.gameStarted && game.player1==ownPlayerName">Start Game</div> -->
             </div>
-            <div class="board" v-if="game.gameStarted">
-                <div v-bind:style="{ width: maxBoardWith }">
-                    <div v-for="(piece, index) of game.board">
-                        <img v-bind:src="pieceImageURL(piece.imageToShow)" v-on:click.prevent="clickPiece(index)">
+            <div class="container" v-if="game.gameStarted">
+                <!-- <div class="row" v-bind:style="{ 'max-height': maxChatHeight, 'overflow': 'scroll'}"> -->
+                    <div class="row">
+                    <div class="col-sm-3 chatBox" v-bind:style="{ height: chatHeight }">
+                        <ul class="messages">     
+                           <!--  <li v-for="message in messages" v-if="message.playerName == ownPlayerName" class="alert-success text-left rounded">You:{{message.message}}</li>
+                            <li v-for="message in messages" v-if="message.playerName != ownPlayerName" class="alert-info text-right rounded">{{message.playerName}}:{{message.message}}</li>  -->                      
+                            <li v-for="message in messages">{{message.playerName}}: {{message.message}}</li>
+                        </ul>
                     </div>
+                    <div class="col-sm-6">
+                        <div class="board text-center col-md">
+                            <div v-bind:style="{ width: maxBoardWith }">
+                                <div v-for="(piece, index) of game.board">
+                                    <img v-bind:src="pieceImageURL(piece.imageToShow)" v-on:click.prevent="clickPiece(index)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-sm-6"> </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm">
+                        <form action="">
+                            <input v-model="input" autocomplete="off" />
+                            <button class="btn btn-success" v-on:click.prevent="sendMessage()">
+                                <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                            </button>
+                        </form>
+                    </div>
+                    <!-- <div class="col-sm">
+                        <div class="btn btn-success" v-on:click.prevent="sendMessage()">Send-></div>
+                    </div> -->
                 </div>
             </div>
             <hr>
@@ -51,12 +78,25 @@
         props: ['game'],
         data: function () {
             return {
-                colsNumber: undefined,
-                linesNumber: undefined,
+                input: "",
+                messages: []
             }
         },
+        sockets: {
+            message_received(data) {
+
+                if (this.game.gameID == data.gameID) {
+                    let playerAndMessage = {
+                        playerName: data.playerName,
+                        message: data.message
+                    }
+                    this.messages.push(playerAndMessage);
+                }
+            }
+
+        },
         computed: {
-            ownScore(){
+            ownScore() {
                 switch (this.ownPlayerNumber) {
                     case 1:
                         return this.game.players[0].score;
@@ -74,19 +114,19 @@
                         break;
                 }
             },
-            disableForm(){
-                if(this.game.defaultSize || this.game.gameStarted) return true;
+            disableForm() {
+                if (this.game.defaultSize || this.game.gameStarted) return true;
                 else return false;
             },
 
-            totTiles(){
+            totTiles() {
                 return this.game.totCols * this.game.totLines;
             },
-            isValidGame(){
-                if (this.totTiles % 2 == 0 && this.totTiles <=80) return true;
+            isValidGame() {
+                if (this.totTiles % 2 == 0 && this.totTiles <= 80) return true;
                 else return false;
             },
-            
+
 
 
             ownPlayerNumber() {
@@ -133,7 +173,8 @@
                 } else if (this.game.gameEnded) {
                     if (this.game.winner == this.ownPlayerNumber) {
                         return "Game has ended. You Win.";
-                    }return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
+                    }
+                    return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
                 } else {
                     if (this.game.playerTurn == this.ownPlayerNumber) {
                         return "It's your turn";
@@ -165,6 +206,10 @@
                 //console.log(this.game.totCols * 50 + "px");
                 return this.game.totCols * 50 + "px";
             },
+            chatHeight: function () {
+               // console.log(this.game.totLines * 50 + "px");
+                return this.game.totLines * 50 + "px";
+            }
         },
         methods: {
             pieceImageURL(pieceNumber) {
@@ -189,7 +234,16 @@
                         }
                     }
                 }
-                
+
+            },
+            sendMessage() {
+                let data = {
+                    gameID: this.game.gameID,
+                    playerName: this.ownPlayerName,
+                    message: this.input
+                }
+                this.$emit("send-message", data);
+                this.input = "";
             }
         },
     }

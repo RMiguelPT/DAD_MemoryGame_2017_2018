@@ -13,7 +13,7 @@
             <h4>Pending games (<a @click.prevent="loadLobby">Refresh</a>)</h4>
             <lobby :games="lobbyGames" @join-click="join"></lobby>
             <template v-for="game in activeGames">
-                <game :game="game" @start-game="start" @play="play"></game>
+                <game :game="game" @start-game="start" @play="play" @send-message="sendMessage"></game>
             </template>
         </div>
     </div>
@@ -85,6 +85,7 @@
                     }
                 }
             },
+           
         },        
         methods: {
             loadLobby(){
@@ -117,6 +118,9 @@
             },
             start(game){
                 this.$socket.emit('start_game', {gameID: game.gameID, totCols: game.totCols, totLines: game.totLines, defaultSize: game.defaultSize});
+            },
+            sendMessage(data){
+                this.$socket.emit("sendMessage", data);
             }
         },
         components: {

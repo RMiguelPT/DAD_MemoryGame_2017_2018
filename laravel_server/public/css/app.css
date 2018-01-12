@@ -8356,9 +8356,36 @@ button.close {
   background-color: transparent;
 }
 
+.game-zone-content {
+  height: 100%;
+  display: block;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.messages {
+  list-style-type: none;
+}
+
+.chatBox {
+  overflow-y: scroll;
+}
+
 .board {
   max-width: 276px;
   margin: 0 auto;
+  height: 100%;
+  display: block;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .board div {

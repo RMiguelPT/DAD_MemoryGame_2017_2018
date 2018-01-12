@@ -47526,7 +47526,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47700,6 +47700,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         start: function start(game) {
             this.$socket.emit('start_game', { gameID: game.gameID, totCols: game.totCols, totLines: game.totLines, defaultSize: game.defaultSize });
+        },
+        sendMessage: function sendMessage(data) {
+            this.$socket.emit("sendMessage", data);
         }
     },
     components: {
@@ -48109,14 +48112,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game'],
     data: function data() {
         return {
-            colsNumber: undefined,
-            linesNumber: undefined
+            input: "",
+            messages: []
         };
+    },
+    sockets: {
+        message_received: function message_received(data) {
+
+            if (this.game.gameID == data.gameID) {
+                var playerAndMessage = {
+                    playerName: data.playerName,
+                    message: data.message
+                };
+                this.messages.push(playerAndMessage);
+            }
+        }
     },
     computed: {
         ownScore: function ownScore() {
@@ -48182,7 +48224,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else if (this.game.gameEnded) {
                 if (this.game.winner == this.ownPlayerNumber) {
                     return "Game has ended. You Win.";
-                }return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
+                }
+                return "Game has ended and " + this.adversaryPlayerName + " has won. You lost.";
             } else {
                 if (this.game.playerTurn == this.ownPlayerNumber) {
                     return "It's your turn";
@@ -48213,6 +48256,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         maxBoardWith: function maxBoardWith() {
             //console.log(this.game.totCols * 50 + "px");
             return this.game.totCols * 50 + "px";
+        },
+        chatHeight: function chatHeight() {
+            // console.log(this.game.totLines * 50 + "px");
+            return this.game.totLines * 50 + "px";
         }
     },
     methods: {
@@ -48238,6 +48285,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     }
                 }
             }
+        },
+        sendMessage: function sendMessage() {
+            var data = {
+                gameID: this.game.gameID,
+                playerName: this.ownPlayerName,
+                message: this.input
+            };
+            this.$emit("send-message", data);
+            this.input = "";
         }
     }
 });
@@ -48260,11 +48316,11 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "game-zone-content" }, [
-      _c("div", { staticClass: "alert", class: _vm.alerttype }, [
+      _c("div", { staticClass: "alert text-center", class: _vm.alerttype }, [
         _c("strong", [
           _vm._v(
             _vm._s(_vm.message) +
-              "     \n                Your score: " +
+              "      Your score: " +
               _vm._s(_vm.ownScore) +
               "\n                "
           ),
@@ -48449,24 +48505,101 @@ var render = function() {
       ]),
       _vm._v(" "),
       _vm.game.gameStarted
-        ? _c("div", { staticClass: "board" }, [
-            _c(
-              "div",
-              { style: { width: _vm.maxBoardWith } },
-              _vm._l(_vm.game.board, function(piece, index) {
-                return _c("div", [
-                  _c("img", {
-                    attrs: { src: _vm.pieceImageURL(piece.imageToShow) },
+        ? _c("div", { staticClass: "container" }, [
+            _c("div", { staticClass: "row" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "col-sm-3 chatBox",
+                  style: { height: _vm.chatHeight }
+                },
+                [
+                  _c(
+                    "ul",
+                    { staticClass: "messages" },
+                    _vm._l(_vm.messages, function(message) {
+                      return _c("li", [
+                        _vm._v(
+                          _vm._s(message.playerName) +
+                            ": " +
+                            _vm._s(message.message)
+                        )
+                      ])
+                    })
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" }, [
+                _c("div", { staticClass: "board text-center col-md" }, [
+                  _c(
+                    "div",
+                    { style: { width: _vm.maxBoardWith } },
+                    _vm._l(_vm.game.board, function(piece, index) {
+                      return _c("div", [
+                        _c("img", {
+                          attrs: { src: _vm.pieceImageURL(piece.imageToShow) },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.clickPiece(index)
+                            }
+                          }
+                        })
+                      ])
+                    })
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-6" })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-sm" }, [
+                _c("form", { attrs: { action: "" } }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.input,
+                        expression: "input"
+                      }
+                    ],
+                    attrs: { autocomplete: "off" },
+                    domProps: { value: _vm.input },
                     on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        _vm.clickPiece(index)
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.input = $event.target.value
                       }
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.sendMessage()
+                        }
+                      }
+                    },
+                    [
+                      _c("span", {
+                        staticClass: "glyphicon glyphicon-send",
+                        attrs: { "aria-hidden": "true" }
+                      })
+                    ]
+                  )
                 ])
-              })
-            )
+              ])
+            ])
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -48579,7 +48712,11 @@ var render = function() {
           return [
             _c("game", {
               attrs: { game: game },
-              on: { "start-game": _vm.start, play: _vm.play }
+              on: {
+                "start-game": _vm.start,
+                play: _vm.play,
+                "send-message": _vm.sendMessage
+              }
             })
           ]
         })
