@@ -97,10 +97,9 @@ export default {
           window.localStorage.setItem("resfreshToken", refreshToken);
           window.localStorage.setItem("isUserLogin", true);
          
+         // store tockens vuex
          this.$store.state.user.headers.Authorization = 'Bearer ' + window.localStorage.getItem("authToken");
          this.$store.state.user.refresh = window.localStorage.getItem("resfreshToken");
-
-
 
           console.log(this.$store.state.user.headers.Authorization);
           console.log(this.$store.state.user.refresh);
@@ -110,14 +109,14 @@ export default {
               Authorization: "Bearer ".concat(token),
               Accept: "application/json"
             }
+
+            
           };
-
-         
-
+ 
 
 // Get and store user data by unique email and redirect to default page
           axios
-            .get("api/users/getuserbymail/" + this.email, config)
+            .get("api/users/getuserbymail/" + this.email, { headers: this.$store.state.user.headers})
             .then(response => {
               console.log(response.data);
               console.log(response.data[0].admin);

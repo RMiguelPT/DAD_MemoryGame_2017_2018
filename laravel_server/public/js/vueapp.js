@@ -47469,15 +47469,50 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
-  methods: {},
-  computed: {},
-  mounted: function mounted() {
+  methods: {
 
-    console.log("dash");
-  }
+    logout: function logout() {
+      var _this = this;
+
+      console.log("Logging Out");
+      console.log(this.$store.state.user.headers.Authorization);
+
+      var config = {
+        headers: {
+          Authorization: this.$store.state.user.headers.Authorization,
+          Accept: "application/json"
+        }
+      };
+      console.log("Logging Out");
+      console.log(config);
+
+      axios.post('api/logout', config).then(function (response) {
+        console.log(response.data);
+        //if(response == 200){
+        //this.user = this.resetUser();
+        _this.$store.state.user.nickname = "";
+        _this.$store.state.user.id = "";
+        _this.$store.state.user.refresh = "";
+        _this.$store.state.user.headers.Accept = "";
+        _this.$store.state.user.headers.Authorization = "";
+        sessionStorage.clear();
+
+        return _this.$router.push("/index");
+        // }
+      });
+    }
+
+  },
+  computed: {},
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -47532,8 +47567,50 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "col-md-7" }),
         _vm._v(" "),
-        _c("div", { staticClass: "col-md-2 text-right" }, [
-          _vm._v(_vm._s(_vm.$store.state.user.nickname))
+        _c("div", { staticClass: "dropdown col-md-2" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-secondary dropdown-toggle",
+              attrs: {
+                type: "button",
+                id: "dropdownMenuButton",
+                "data-toggle": "dropdown",
+                "aria-haspopup": "true",
+                "aria-expanded": "false"
+              }
+            },
+            [
+              _vm._v(
+                "\n            " +
+                  _vm._s(_vm.$store.state.user.nickname) +
+                  "\n            "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "dropdown-menu",
+              attrs: { "aria-labelledby": "dropdownMenuButton" }
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "dropdown-item",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.logout()
+                    }
+                  }
+                },
+                [_vm._v("Logout")]
+              )
+            ]
+          )
         ])
       ])
     ]
@@ -49762,6 +49839,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]();
         window.localStorage.setItem("resfreshToken", refreshToken);
         window.localStorage.setItem("isUserLogin", true);
 
+        // store tockens vuex
         _this.$store.state.user.headers.Authorization = 'Bearer ' + window.localStorage.getItem("authToken");
         _this.$store.state.user.refresh = window.localStorage.getItem("resfreshToken");
 
@@ -49773,10 +49851,11 @@ var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]();
             Authorization: "Bearer ".concat(token),
             Accept: "application/json"
           }
+
         };
 
         // Get and store user data by unique email and redirect to default page
-        axios.get("api/users/getuserbymail/" + _this.email, config).then(function (response) {
+        axios.get("api/users/getuserbymail/" + _this.email, { headers: _this.$store.state.user.headers }).then(function (response) {
           console.log(response.data);
           console.log(response.data[0].admin);
 
