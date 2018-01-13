@@ -47699,6 +47699,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -47712,19 +47728,47 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "navbar navbar-toggleable-md navbar-light bg-faded" },
+    {
+      staticClass: "container navbar navbar-toggleable-md navbar-light bg-faded"
+    },
     [
-      _c("router-link", { attrs: { to: "/users" } }, [_vm._v("Users")]),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/singleplayer" } }, [
-        _vm._v("SinglePlayer")
-      ]),
-      _vm._v(" "),
-      _c("router-link", { attrs: { to: "/multiplayer" } }, [
-        _vm._v("Multiplayer")
+      _c("div", { staticClass: "row" }, [
+        _c(
+          "div",
+          { staticClass: "col-md-1" },
+          [_c("router-link", { attrs: { to: "/users" } }, [_vm._v("Users")])],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-1" },
+          [
+            _c("router-link", { attrs: { to: "/singleplayer" } }, [
+              _vm._v("SinglePlayer")
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-md-1" },
+          [
+            _c("router-link", { attrs: { to: "/multiplayer" } }, [
+              _vm._v("Multiplayer")
+            ])
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-7" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-2 text-right" }, [
+          _vm._v("Place Username/login/logout Here ")
+        ])
       ])
-    ],
-    1
+    ]
   )
 }
 var staticRenderFns = []
