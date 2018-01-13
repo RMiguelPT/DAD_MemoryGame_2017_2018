@@ -21,50 +21,54 @@ Vue.use(VueRouter);
 Vue.use(VueSocketio, 'http://192.168.10.10:8080');
 // Vue.use(VueSocketio, 'http://192.168.10.1:8080');
 
-const user = Vue.component('user', require('./components/user.vue'));
+const dash = Vue.component('user', require('./components/dashboard.vue'));
 const singleplayer_game = Vue.component('singleplayer', require('./components/singleplayer.vue'));
 const multiplayer_game = Vue.component('multiplayer', require('./components/multiplayer.vue'));
+const login = Vue.component('login', require('./components/login.vue'));
+const index = Vue.component('index', require('./components/index.vue'));
 
-const routes = [{
-    path: '/',
-    redirect: '/users'
-  },
-  {
-    path: '/users',
-    component: user
-  },
-  {
-    path: '/singleplayer',
-    component: singleplayer_game
-  },
-  {
-    path: '/multiplayer',
-    component: multiplayer_game
-  }
+
+const routes = [
+  { path: '/', redirect: '/index' },
+  { path: '/index', component: index },
+  { path: '/login', component: login }, 
+  { path: '/dash',component: dash},
+  { path: '/singleplayer',component: singleplayer_game},
+  { path: '/multiplayer',component: multiplayer_game}
 ];
 
 const router = new VueRouter({
   routes: routes,
-  history: true,
-  mode: 'history'
+
 });
 
 const store = new Vuex.Store({
   state: {
     user: {
-      id: sessionStorage.getItem("id"),
-      nickname: sessionStorage.getItem("nickname"),
-      admin: sessionStorage.getItem("admin"),
+      id: '',
+      nickname: '',
+      admin: '',
+      refresh: '',
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer ' + sessionStorage.getItem("token")
+        Authorization: ''
       }
     }
+  },
+getters: {
+
+  getNickname (state){
+
+    return state.user.nickname;
   }
+
+}
+
 });
 
 const app = new Vue({
   router,
+  store,
   data: {
     player1: undefined,
     player2: undefined,

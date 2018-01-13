@@ -42,6 +42,14 @@ class UserControllerAPI extends Controller
         return response()->json(new UserResource($user), 201);
     }
 
+    public function getUserByMail(Request $request, $email)
+    {
+   
+        return DB::table('users')->where('email', '=', $email)->get();
+        
+    }
+
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -69,4 +77,45 @@ class UserControllerAPI extends Controller
         }
         return response()->json($totalEmail == 0);
     }
+
+
+    // FROM: https://laracasts.com/discuss/channels/laravel/validate-access-token-from-controller
+    
+    public function validateToken(Request $request, $localCall = false) {
+    
+    
+        $psr = (new DiactorosFactory)->createRequest($request);
+ 
+        try {
+            $psr = $this->server->validateAuthenticatedRequest($psr);
+ 
+        
+            $token = $this->tokens->find(
+                $psr->getAttribute('oauth_access_token_id')
+            );
+ 
+            $currentDate = new DateTime();
+            $tokenExpireDate = new DateTime($token->expires_at);
+            $isAuthenticated = $tokenExpireDate > $currentDate ? true : false;
+      
+ 
+             return $isAuthenticated;
+        
+        } catch (OAuthServerException $e) {
+            if($localCall) {
+                return false;
+            }
+            else {
+                return json_encode(array('error' => 'Something went wrong with authenticating. Please logout and login again.'));
+            }
+        }
+ 
+ 
+     }
+
+
+
+
+
+
 }

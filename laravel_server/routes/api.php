@@ -17,6 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('login', 'LoginControllerAPI@login');
+Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
+
+
+Route::get('users/getuserbymail/{email}', 'UserControllerAPI@getUserByMail')->middleware('auth:api');
+
 Route::get('users', 'UserControllerAPI@getUsers');
 Route::get('users/emailavailable', 'UserControllerAPI@emailAvailable');
 Route::get('users/{id}', 'UserControllerAPI@getUser');

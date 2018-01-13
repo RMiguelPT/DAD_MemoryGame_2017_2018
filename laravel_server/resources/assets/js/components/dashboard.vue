@@ -24,7 +24,7 @@
 	export default {
 		data: function () {
 			return {
-				title: 'List Users',
+				title: 'Dashboard',
 				showSuccess: false,
 				successMessage: '',
 				currentUser: null,
