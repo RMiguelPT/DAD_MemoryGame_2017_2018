@@ -15,9 +15,16 @@
 	            name="email" id="inputEmail"
 	            placeholder="Email address"/>
 	    </div>
+		 <div class="form-group">
+	        <label for="inputNickname">Nickname</label>
+	        <input
+	            type="text" class="form-control" v-model="user.nickname"
+	            name="name" id="inputNickname"
+	            placeholder="Nickname"/>
+	    </div>
 	    <div class="form-group">
-	        <a class="btn btn-default" v-on:click.prevent="saveUser()">Save</a>
-	        <a class="btn btn-default" v-on:click.prevent="cancelEdit()">Cancel</a>
+	        <a class="btn btn-success" v-on:click.prevent="saveUser()">Save</a>
+	        <a class="btn btn-danger" v-on:click.prevent="cancelEdit()">Cancel</a>
 	    </div>
 	</div>
 </template>

@@ -54,6 +54,7 @@ const store = new Vuex.Store({
     user: {
       id: sessionStorage.getItem("id"),
       nickname: sessionStorage.getItem("nickname"),
+      admin: sessionStorage.getItem("admin"),
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + sessionStorage.getItem("token")

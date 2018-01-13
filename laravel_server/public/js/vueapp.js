@@ -1487,6 +1487,7 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
     user: {
       id: sessionStorage.getItem("id"),
       nickname: sessionStorage.getItem("nickname"),
+      admin: sessionStorage.getItem("admin"),
       headers: {
         Accept: 'application/json',
         Authorization: 'Bearer ' + sessionStorage.getItem("token")
@@ -47274,6 +47275,8 @@ exports.push([module.i, "\ntr.activerow[data-v-0228aba0] {\n  \t\tbackground: #1
 //
 //
 //
+//
+//
 
 // Component code (not registered)
 module.exports = {
@@ -47321,6 +47324,8 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(user.email))]),
             _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(user.nickname))]),
+            _vm._v(" "),
             _c("td", [
               _c(
                 "a",
@@ -47366,6 +47371,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Name")]),
         _vm._v(" "),
         _c("th", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nickname")]),
         _vm._v(" "),
         _c("th", [_vm._v("Actions")])
       ])
@@ -47467,7 +47474,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47476,6 +47483,13 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 /* 59 */
 /***/ (function(module, exports) {
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47601,10 +47615,41 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "inputNickname" } }, [_vm._v("Nickname")]),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.user.nickname,
+            expression: "user.nickname"
+          }
+        ],
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          name: "name",
+          id: "inputNickname",
+          placeholder: "Nickname"
+        },
+        domProps: { value: _vm.user.nickname },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.$set(_vm.user, "nickname", $event.target.value)
+          }
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "form-group" }, [
       _c(
         "a",
         {
-          staticClass: "btn btn-default",
+          staticClass: "btn btn-success",
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -47618,7 +47663,7 @@ var render = function() {
       _c(
         "a",
         {
-          staticClass: "btn btn-default",
+          staticClass: "btn btn-danger",
           on: {
             click: function($event) {
               $event.preventDefault()
