@@ -18,7 +18,7 @@ class User extends Resource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'age' => $this->age,
+            'nickname' => $this->nickname,
         ];
     }
 }

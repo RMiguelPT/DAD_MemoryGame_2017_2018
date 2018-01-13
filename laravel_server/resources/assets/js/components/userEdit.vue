@@ -16,13 +16,6 @@
 	            placeholder="Email address"/>
 	    </div>
 	    <div class="form-group">
-	        <label for="inputAge">Age</label>
-	        <input
-	            type="number" class="form-control" v-model="user.age"
-	            name="age" id="inputAge"
-	            placeholder="Age"/>
-	    </div>
-	    <div class="form-group">
 	        <a class="btn btn-default" v-on:click.prevent="saveUser()">Save</a>
 	        <a class="btn btn-default" v-on:click.prevent="cancelEdit()">Cancel</a>
 	    </div>
