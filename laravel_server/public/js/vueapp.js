@@ -4191,7 +4191,6 @@ window.Vue = __webpack_require__(43);
 Vue.use(__WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_socket_io___default.a, 'http://192.168.10.10:8080');
-// Vue.use(VueSocketio, 'http://192.168.10.1:8080');
 
 var dash = Vue.component('user', __webpack_require__(48));
 var singleplayer_game = Vue.component('singleplayer', __webpack_require__(64));
@@ -47496,8 +47495,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       axios.post('api/logout', config).then(function (response) {
         console.log(response.data);
-        //if(response == 200){
-        //this.user = this.resetUser();
+
         _this.$store.state.user.nickname = "";
         _this.$store.state.user.id = "";
         _this.$store.state.user.refresh = "";
@@ -47506,7 +47504,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sessionStorage.clear();
 
         return _this.$router.push("/index");
-        // }
       });
     }
 
@@ -47780,7 +47777,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47856,15 +47853,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -47875,7 +47863,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             totLines: 4,
             totCols: 4,
             validGame: 0,
-            //remaningTiles: undefined,
             totMoves: undefined,
             gameStatus: 0,
             gameStarted: false,
@@ -47900,9 +47887,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         startGame: function startGame() {
-            console.log(this.totLines);
-            console.log(this.totCols);
-            console.log("Game Started");
+
             if (this.totTiles % 2 == 0 && this.totTiles <= 80) {
                 this.createBoard();
                 this.gameStarted = true;
@@ -47911,14 +47896,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             } else {
                 this.failMessage = "Columns x Rows must be even and less than 80";
                 this.showFailure = true;
-
-                //console.log("Cols or rows invalid");
             }
         },
         stopGame: function stopGame() {
             this.gameStarted = false;
             this.board = [];
-            console.log("Game STOPED");
         },
 
         createBoard: function createBoard() {
@@ -47945,13 +47927,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             for (var i = 0; i < 40; i++) {
                 shuffle(this.board);
             }
-
-            console.table(this.board);
         },
 
         clickPiece: function clickPiece(index) {
             var piece = this.board[index];
-            //console.log(this.gameStarted);
             if (!this.gameStarted || piece.flipped || piece.removed) return;
             if (this.clickCounter == 0) {
                 piece.flipped = true;
@@ -48089,12 +48068,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.board = [];
-        //INIT
-        //this.totTiles = this.totLines * this.totCols;
-
-        // for (var i = 0; i < this.totTiles; i++) {
-        //     this.board.push(0);
-        // }
     }
 });
 
@@ -48321,9 +48294,7 @@ var render = function() {
               })
             )
           ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("hr")
+        : _vm._e()
     ],
     1
   )
@@ -48425,7 +48396,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48506,7 +48477,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         my_lobby_games: function my_lobby_games(games) {
             this.lobbyGames = games;
-            //console.log(games[0].players[0])
         },
         invalid_play: function invalid_play(errorObject) {
             if (errorObject.type == 'Invalid_Game') {
@@ -48727,7 +48697,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48774,20 +48744,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
-// Component code (not registered)
 module.exports = {
 	props: ['games'],
 	methods: {
@@ -49058,15 +49015,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game'],
@@ -49182,17 +49130,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         maxBoardWith: function maxBoardWith() {
-            //console.log(this.game.totCols * 50 + "px");
             return this.game.totCols * 50 + "px";
         },
         chatHeight: function chatHeight() {
-            // console.log(this.game.totLines * 50 + "px");
             return this.game.totLines * 50 + "px";
         }
     },
     methods: {
         pieceImageURL: function pieceImageURL(pieceNumber) {
-            //console.log(pieceNumber);
             var imgSrc = String(pieceNumber);
             return 'img/' + imgSrc + '.png';
         },
@@ -49203,7 +49148,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit("start-game", this.game);
         },
         clickPiece: function clickPiece(index) {
-            //console.log(this.game);
             if (!this.game.gameEnded) {
                 if (this.game.playerTurn != this.ownPlayerNumber) {
                     alert("It's not your turn to play");
@@ -49824,12 +49768,6 @@ var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]();
     loginUser: function loginUser() {
       var _this = this;
 
-      //   this.email = "admin@mail.dad";
-      //   this.password = "secret";
-
-      console.log(this.email);
-      console.log(this.password);
-
       // Get Tokens and store in window localstorage and Vuex store
       axios.post("api/login", { email: this.email, password: this.password }).then(function (response) {
         var token = response.data.access_token;
@@ -49843,26 +49781,10 @@ var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]();
         _this.$store.state.user.headers.Authorization = 'Bearer ' + window.localStorage.getItem("authToken");
         _this.$store.state.user.refresh = window.localStorage.getItem("resfreshToken");
 
-        console.log(_this.$store.state.user.headers.Authorization);
-        console.log(_this.$store.state.user.refresh);
-
-        var config = {
-          headers: {
-            Authorization: "Bearer ".concat(token),
-            Accept: "application/json"
-          }
-
-        };
-
         // Get and store user data by unique email and redirect to default page
         axios.get("api/users/getuserbymail/" + _this.email, { headers: _this.$store.state.user.headers }).then(function (response) {
-          console.log(response.data);
-          console.log(response.data[0].admin);
 
           _this.$store.state.user.nickname = response.data[0].nickname;
-          console.log("#############");
-          console.log(response.data[0].nickname);
-          window.localStorage.setItem("userData", response.data);
 
           if (response.data[0].admin == "1") {
             _this.$store.state.user.admin = true;

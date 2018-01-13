@@ -80,12 +80,7 @@ export default {
   },
   methods: {
     loginUser: function() {
-   //   this.email = "admin@mail.dad";
-   //   this.password = "secret";
-
-      console.log(this.email);
-      console.log(this.password);
-
+  
 // Get Tokens and store in window localstorage and Vuex store
       axios
         .post("api/login", { email: this.email, password: this.password })
@@ -101,32 +96,12 @@ export default {
          this.$store.state.user.headers.Authorization = 'Bearer ' + window.localStorage.getItem("authToken");
          this.$store.state.user.refresh = window.localStorage.getItem("resfreshToken");
 
-          console.log(this.$store.state.user.headers.Authorization);
-          console.log(this.$store.state.user.refresh);
-          
-          var config = {
-            headers: {
-              Authorization: "Bearer ".concat(token),
-              Accept: "application/json"
-            }
-
-            
-          };
- 
-
 // Get and store user data by unique email and redirect to default page
           axios
             .get("api/users/getuserbymail/" + this.email, { headers: this.$store.state.user.headers})
             .then(response => {
-              console.log(response.data);
-              console.log(response.data[0].admin);
 
               this.$store.state.user.nickname =  response.data[0].nickname;
-                console.log("#############");
-                console.log(response.data[0].nickname);
-              window.localStorage.setItem("userData", response.data);
-
-
 
               if (response.data[0].admin == "1") {
                 this.$store.state.user.admin = true;

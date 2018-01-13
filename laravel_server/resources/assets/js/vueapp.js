@@ -19,7 +19,6 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(VueSocketio, 'http://192.168.10.10:8080');
-// Vue.use(VueSocketio, 'http://192.168.10.1:8080');
 
 const dash = Vue.component('user', require('./components/dashboard.vue'));
 const singleplayer_game = Vue.component('singleplayer', require('./components/singleplayer.vue'));

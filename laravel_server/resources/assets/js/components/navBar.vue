@@ -50,8 +50,7 @@
 
                 axios.post('api/logout', config).then(response=>{
                     console.log(response.data);
-                    //if(response == 200){
-                    //this.user = this.resetUser();
+                   
                     this.$store.state.user.nickname = "";
                     this.$store.state.user.id = "";
                     this.$store.state.user.refresh = "";
@@ -60,7 +59,6 @@
                     sessionStorage.clear();
 
                     return this.$router.push("/index");
-               // }
             });
             }
 

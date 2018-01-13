@@ -13,12 +13,8 @@ use Illuminate\Contracts\Support\Jsonable;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::post('login', 'LoginControllerAPI@login');
-//Route::middleware('auth:api')->post('logout','LoginControllerAPI@logout');
 
 Route::post('logout', 'LoginControllerAPI@logout');
 Route::get('users/getuserbymail/{email}', 'UserControllerAPI@getUserByMail')->middleware('auth:api');

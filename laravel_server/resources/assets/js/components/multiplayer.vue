@@ -62,7 +62,6 @@
             },
             my_lobby_games(games) {
                 this.lobbyGames = games;
-                //console.log(games[0].players[0])
             },
             invalid_play(errorObject) {
                 if (errorObject.type == 'Invalid_Game') {

@@ -27,19 +27,13 @@
                     </div>
                     <div>
                         <div class="btn btn-xs btn-success" v-on:click.prevent="startgame" v-if="game.players[1] && !game.gameStarted && game.players[0].playerName==ownPlayerName">Start Game</div>
-                        <!-- <a class="btn btn-default" v-if="!gameStarted" v-on:click.prevent="startGame()">Start Game</a>
-                        <a class="btn btn-default" v-if="gameStarted" v-on:click.prevent="stopGame()">Stop Game</a> -->
                     </div>
                 </form>
-                <!-- <div class="btn btn-xs btn-success" v-on:click.prevent="startgame" v-if="game.player2 && !game.gameStarted && game.player1==ownPlayerName">Start Game</div> -->
             </div>
             <div class="container" v-if="game.gameStarted">
-                <!-- <div class="row" v-bind:style="{ 'max-height': maxChatHeight, 'overflow': 'scroll'}"> -->
                     <div class="row">
                     <div class="col-sm-3 chatBox" v-bind:style="{ height: chatHeight }">
-                        <ul class="messages">     
-                           <!--  <li v-for="message in messages" v-if="message.playerName == ownPlayerName" class="alert-success text-left rounded">You:{{message.message}}</li>
-                            <li v-for="message in messages" v-if="message.playerName != ownPlayerName" class="alert-info text-right rounded">{{message.playerName}}:{{message.message}}</li>  -->                      
+                        <ul class="messages">                         
                             <li v-for="message in messages">{{message.playerName}}: {{message.message}}</li>
                         </ul>
                     </div>
@@ -63,9 +57,6 @@
                             </button>
                         </form>
                     </div>
-                    <!-- <div class="col-sm">
-                        <div class="btn btn-success" v-on:click.prevent="sendMessage()">Send-></div>
-                    </div> -->
                 </div>
             </div>
             <hr>
@@ -203,17 +194,14 @@
 
             },
             maxBoardWith: function () {
-                //console.log(this.game.totCols * 50 + "px");
                 return this.game.totCols * 50 + "px";
             },
             chatHeight: function () {
-               // console.log(this.game.totLines * 50 + "px");
                 return this.game.totLines * 50 + "px";
             }
         },
         methods: {
             pieceImageURL(pieceNumber) {
-                //console.log(pieceNumber);
                 var imgSrc = String(pieceNumber);
                 return 'img/' + imgSrc + '.png';
             },
@@ -224,7 +212,6 @@
                 this.$emit("start-game", this.game);
             },
             clickPiece(index) {
-                //console.log(this.game);
                 if (!this.game.gameEnded) {
                     if (this.game.playerTurn != this.ownPlayerNumber) {
                         alert("It's not your turn to play");

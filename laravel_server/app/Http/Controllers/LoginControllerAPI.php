@@ -27,15 +27,7 @@ use Illuminate\Http\Request;
 
         public function logout()
     {
-        
-       /* \Auth::guard('api')->user()->token()->revoke();
-        \Auth::guard('api')->user()->token()->delete();
-        return response()->json(['msg'=>'Token revoked'], 200);
-         
-  */
-  
             if(\Auth::check()) {
-            //\Auth::user()->AuthAccessToken()->delete();
             \Auth::logout();
             return response()->json(['msg'=>'Token revoked'], 200); 
         
