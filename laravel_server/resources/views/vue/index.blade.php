@@ -3,10 +3,9 @@
 @section('title', 'Vue.js App')
 
 @section('content')
-    <router-link to="/users">Users</router-link> -  
-    <!-- <router-link to="/departments">Departments</router-link> - -->
-    <router-link to="/singleplayer">SinglePlayer</router-link> -
-    <router-link to="/multiplayer">Multiplayer</router-link>
+    <!-- <router-link to="/users">Users</router-link> 
+    <router-link to="/singleplayer">SinglePlayer</router-link>
+    <router-link to="/multiplayer">Multiplayer</router-link> -->
 
     <router-view></router-view>
 @endsection
