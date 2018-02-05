@@ -3,6 +3,9 @@
 		<nav-bar></nav-bar>
 		<div class="jumbotron">
 			<h1>{{ title }}</h1>
+			<button v-model="label" v-on:click="countUsers()">Obter Total users</button>
+			<input v-model="totUsers">
+
 		</div>
 
 		<user-list :users="users" @edit-click="editUser" @delete-click="deleteUser" @message="childMessage" ref="usersListRef"></user-list>
@@ -29,6 +32,8 @@
 				successMessage: '',
 				currentUser: null,
 				users: [],
+				totUsers: undefined,
+				label: "obter total de users"
 
 			}
 		},
@@ -65,7 +70,20 @@
 			childMessage: function (message) {
 				this.showSuccess = true;
 				this.successMessage = message;
+			},
+			 countUsers: function () {
+				axios.get("api/users") 
+				.then(response => {
+					this.totUsers = response.data;
+					
+					return true;
+				});
+
+				label = this.totUsers;
+				
 			}
+
+			
 		},
 		components: {
 			'user-list': UserList,

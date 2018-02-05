@@ -13,6 +13,7 @@
             </p>
             <hr>
             <h3 class="text-center">Lobby</h3>
+           
             <p>
                 <button class="btn btn-xs btn-success" v-on:click.prevent="createGame">Create a New Game</button>
             </p>
@@ -36,10 +37,13 @@
         data: function () {
             return {
                 title: 'Multiplayer Memorygame',
-                currentPlayer: 'Player ' + Math.floor(Math.random() * 10000),
+                //currentPlayer: 'Player ' + Math.floor(Math.random() * 10000),
+                input: "",
+                lobbyMessages: [],
                 lobbyGames: [],
                 activeGames: [],
                 socketId: "",
+                currentPlayer: window.localStorage.getItem("userName")
             }
         },
         sockets: {
@@ -92,7 +96,11 @@
                         break;
                     }
                 }
-            },
+            }
+
+           
+
+           
 
         },
         methods: {
@@ -144,6 +152,7 @@
             sendMessage(data) {
                 this.$socket.emit("sendMessage", data);
             }
+
         },
         components: {
             'lobby': Lobby,

@@ -1,0 +1,165 @@
+
+---------------------------------------------- VIRAR PEÇA POR NUMERO ------------------------------------------------------------------
+GAME.VUE
+    <HTML> incorporar a div na linha 16
+         <div>
+                <label for="piece">Piece:</label>
+                <input type="text" id="piece" name="piece" v-model="pieceToFlip">
+                <div class="btn btn-danger" v-on:click.prevent="flipPiece">Flip</div>
+                <span class="error" id="msgError_Lines"></span>
+        </div>
+
+        inserir seguinte método nos METHODS linha 243
+
+        flipPiece(){
+                let data = {
+                     gameID: this.game.gameID,
+                     pieceToFlip: this.pieceToFlip
+                }
+                this.$socket.emit("flipPiece", data);
+            },
+
+GAMESERVER.js
+
+    inserir a seguinte socket no ficheiro gamserver.js linha 
+        	socket.on("flipPiece", function (data) {
+                console.log("Piece to flip: " + data.pieceToFlip);
+                let game = games.gameByID(data.gameID);
+                if(game.flipPiece(data.pieceToFlip)){
+                    io.to(game.gameID).emit('game_changed', game);
+                    console.log("Piece fliped");
+                }
+            });
+
+        
+GAMEMODEL.js
+    inserir a seguinte função na linha 325
+
+        flipPiece(piece){
+        if (!this.gameStarted) return false;
+        console.log("Board size: " + this.board.length);
+
+       for(let i = 0; i<this.board[i].length; i++)
+       {
+           if (this.board[i].number == piece){
+               this.board[i].imageToShow = this.board[i].number;
+                this.board[i].flipped = true;
+           }
+       }
+           return true;
+    }
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------- TIME STAMP NO CHAT-------------------------------------------------------------------------
+adicionar {{message.time}} na linha 48 a seguir a {{message.message}}
+     <li v-for="message in messages">{{message.playerName}}: {{message.message}}</li>
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+---------------------------------- CHAT GERAL NO LOBBY -----------------------------------------------------------------------
+MULTUIPLAYERS.VUE
+#inserir a segint <div> no multiplayer view linha 16
+
+
+            <div>
+                <div class="col-sm-3 chatBox">
+                        <ul class="messages">  
+                            <!-- Chat MESSAGES -->                      
+                            <!-- <li v-for="message in lobbyMessages">{{message.playerName}}: {{message.message}}</li> -->
+                            <li v-for="message in messages">{{message.playerName}}: {{message.message}}</li>
+                        </ul>
+                    </div>
+            </div>
+
+
+#inserir por baixo da div acima criada a seguinte div
+
+
+    <div class="row">
+                    <div class="col-sm">
+                        <form action="">
+                            <input v-model="input" autocomplete="off" />
+                            <button class="btn btn-success" v-on:click.prevent="sendMessage()">
+                                <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+#adicionar as secokets a seguinte função
+
+
+     lobbyMessagesReceived(data) {
+                let lobbyMessage = {
+                    playerName: data.playerName,
+                    message: data.message
+                }
+
+        this.lobbyMessages.push(lobbyMessage);
+    }
+
+
+
+#adicionar aos metodos a seguinte funcao
+
+
+    sendLobbyMessages(){
+
+                let data = {
+                    playerName: window.localStorage.getItem('userName'),
+                    message: this.input
+                }
+
+                this.$socket.emit("sendlobbymessages", data);
+            }
+
+
+--------------
+GAMESERVER.js
+#adicionar a seguinte socket ao ficheiro gameserver.js  
+
+
+    	socket.on("sendlobbymessages", function (data){
+            console.log("Message received on server");
+            io.sockets.emit("lobbyMessagesReceived", data);
+	    });
+
+
+--------------------------------------- COUNT USERS ----------------------------------------------
+DASHBOARD.VUE
+inserir no jumbotron
+    <button class="btn btn-warning" v-on:click.prevent="countUsers()">Count Users</button>
+	<input type="text" v-model="totUsers">
+
+adicionar aos metodos a seguinte funcao
+    countUsers: function () {
+				axios.get("api/users") //funcao users adicionar o count();
+				.then(response => {
+					this.totUsers = response.data;
+					return true;
+				});
+			}
+
+----------------------------------------------------------------------------------------------------
+
+---------------------------------- clicar na primeira peça e virar todas ---------------------------
+
+SINGLEPLAYER.VUE
+
+adicionar ao inicio do método clickpiece() o seguinte código
+                    
+                    if(index == '0'){
+
+                        for(let i=0;i<16;i++){
+                            var piece = this.board[i];
+                            piece.flipped = true;
+                            piece.imageToShow = this.board[i].number;
+                        }
+                    }
+------------------------------------------------------------------------------------------------------
+
+---------------------------------------- LARAVEL API QUERIES -----------------------------------
+https://laravel.com/docs/5.5/queries

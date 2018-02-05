@@ -46950,6 +46950,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -46962,7 +46965,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			showSuccess: false,
 			successMessage: '',
 			currentUser: null,
-			users: []
+			users: [],
+			totUsers: undefined,
+			label: "obter total de users"
 
 		};
 	},
@@ -47001,7 +47006,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 		childMessage: function childMessage(message) {
 			this.showSuccess = true;
 			this.successMessage = message;
+		},
+		countUsers: function countUsers() {
+			var _this3 = this;
+
+			axios.get("api/users").then(function (response) {
+				_this3.totUsers = response.data;
+
+				return true;
+			});
+
+			label = this.totUsers;
 		}
+
 	},
 	components: {
 		'user-list': __WEBPACK_IMPORTED_MODULE_0__userList_vue___default.a,
@@ -47637,7 +47654,46 @@ var render = function() {
       _c("nav-bar"),
       _vm._v(" "),
       _c("div", { staticClass: "jumbotron" }, [
-        _c("h1", [_vm._v(_vm._s(_vm.title))])
+        _c("h1", [_vm._v(_vm._s(_vm.title))]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            on: {
+              click: function($event) {
+                _vm.countUsers()
+              }
+            },
+            model: {
+              value: _vm.label,
+              callback: function($$v) {
+                _vm.label = $$v
+              },
+              expression: "label"
+            }
+          },
+          [_vm._v("Obter Total users")]
+        ),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.totUsers,
+              expression: "totUsers"
+            }
+          ],
+          domProps: { value: _vm.totUsers },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.totUsers = $event.target.value
+            }
+          }
+        })
       ]),
       _vm._v(" "),
       _c("user-list", {
@@ -47777,7 +47833,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -47790,6 +47846,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navBar_vue__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navBar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__navBar_vue__);
+//
 //
 //
 //
@@ -47876,7 +47933,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             successMessage: '',
             failMessage: '',
             gameEndedMessage: '',
-            showGameEndedMessage: false
+            showGameEndedMessage: false,
+            nickName: window.localStorage.getItem("userName")
 
         };
     },
@@ -47930,6 +47988,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
 
         clickPiece: function clickPiece(index) {
+
             var piece = this.board[index];
             if (!this.gameStarted || piece.flipped || piece.removed) return;
             if (this.clickCounter == 0) {
@@ -48156,6 +48215,8 @@ var render = function() {
       _vm._v(" "),
       _c("form", { attrs: { action: "#", method: "get", id: "id_form" } }, [
         _c("div", [
+          _c("h2", [_vm._v("Current Player : " + _vm._s(_vm.nickName))]),
+          _vm._v(" "),
           _c("label", { attrs: { for: "idLines" } }, [_vm._v("Total Lines:")]),
           _vm._v(" "),
           _c("input", {
@@ -48396,7 +48457,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -48442,6 +48503,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -48451,10 +48513,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             title: 'Multiplayer Memorygame',
-            currentPlayer: 'Player ' + Math.floor(Math.random() * 10000),
+            //currentPlayer: 'Player ' + Math.floor(Math.random() * 10000),
+            input: "",
+            lobbyMessages: [],
             lobbyGames: [],
             activeGames: [],
-            socketId: ""
+            socketId: "",
+            currentPlayer: window.localStorage.getItem("userName")
         };
     },
     sockets: {
@@ -49015,22 +49080,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['game'],
     data: function data() {
         return {
             input: "",
-            messages: []
+            messages: [],
+            pieceToFlip: undefined
         };
     },
     sockets: {
         message_received: function message_received(data) {
-
+            var date = new Date();
+            var formatedDate = date.getHours() + ":" + date.getMinutes();
             if (this.game.gameID == data.gameID) {
                 var playerAndMessage = {
                     playerName: data.playerName,
-                    message: data.message
+                    message: data.message,
+                    time: Date.now()
                 };
                 this.messages.push(playerAndMessage);
             }
@@ -49145,6 +49224,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$parent.close(this.game);
         },
         startgame: function startgame() {
+            console.log("player[0] name:" + this.game.players[0].playerName);
+            console.log("own:" + this.ownPlayerName);
             this.$emit("start-game", this.game);
         },
         clickPiece: function clickPiece(index) {
@@ -49163,6 +49244,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 gameID: this.game.gameID,
                 playerName: this.ownPlayerName,
                 message: this.input
+
             };
             this.$emit("send-message", data);
             this.input = "";
@@ -49785,6 +49867,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_2_vue_router__["a" /* default */]();
         axios.get("api/users/getuserbymail/" + _this.email, { headers: _this.$store.state.user.headers }).then(function (response) {
 
           _this.$store.state.user.nickname = response.data[0].nickname;
+          window.localStorage.setItem("userName", response.data[0].nickname);
 
           if (response.data[0].admin == "1") {
             _this.$store.state.user.admin = true;
@@ -50136,7 +50219,7 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "content" }, [
         _c("div", { staticClass: "title m-b-md" }, [
-          _vm._v("\n                    DAD Memory Game\n                ")
+          _vm._v("\r\n                    DAD Memory Game\r\n                ")
         ]),
         _vm._v(" "),
         _vm._m(0),
@@ -50156,7 +50239,7 @@ var render = function() {
             },
             [
               _vm._v(
-                "\n                                    Enter\n                                "
+                "\r\n                                    Enter\r\n                                "
               )
             ]
           )

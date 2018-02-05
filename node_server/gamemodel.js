@@ -149,7 +149,7 @@ class MemoryGame {
 
     //Check for duplicates
     canBePushed(number) {
-        if (this.board.lenght == 0) {
+        if (this.board.length == 0) {
             return true;
         }
 
@@ -322,9 +322,16 @@ class MemoryGame {
         return maxScore;
     }
 
+    
 
 
 
+
+
+
+
+
+    
 }
 
 module.exports = MemoryGame;

@@ -5,9 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Game as GameResource;
 use App\Game;
+use Illuminate\Support\Facades\DB;
 
 class GameControllerAPI extends Controller
 {
+
+
+    public function gamesByWinner($id)
+    {
+        return GameResource::collection(Game::where('winner', $id)->get());
+        
+    }
+
+    public function deleteAllGames()
+    {
+        //delete all games
+        return DB::table('games')->delete();
+    }
+
+    public function deleteGamesByStatus($status) {
+        //delete games with filters
+        return DB::table('games')->where('status', '=', $status)->delete();
+    }
+
+
     public function index()
     {
         return GameResource::collection(Game::all());

@@ -102,6 +102,7 @@ export default {
             .then(response => {
 
               this.$store.state.user.nickname =  response.data[0].nickname;
+              window.localStorage.setItem("userName", response.data[0].nickname);
 
               if (response.data[0].admin == "1") {
                 this.$store.state.user.admin = true;

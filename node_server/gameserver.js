@@ -36,6 +36,9 @@ let games = new GameList();
 io.on('connection', function (socket) {
 	console.log('client has connected');
 
+
+
+
 	socket.on('create_game', function (data) {
 		let game = games.createGame(data.playerName, socket.id);
 		socket.join(game.gameID);
@@ -124,6 +127,4 @@ io.on('connection', function (socket) {
 		console.log("Message received on server");
 		io.to(data.gameID).emit("message_received", data);
 	});
-	
-
 });

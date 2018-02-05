@@ -14,12 +14,29 @@ use Hash;
 
 class UserControllerAPI extends Controller
 {
+
+    public function getBlockedUsers(Request $request)
+    {
+        return DB::table('users')->where('blocked', '=', '1')->get();
+    }
+
+    public function getAdminUsers(Request $request)
+    {
+        return DB::table('users')->where('admin', '=', '1')->get();
+    }
+
+  
+    public function count (Request $request) {
+        return UserResource::collection(User::all())->count();
+    }
+
+
     public function getUsers(Request $request)
     {
         if ($request->has('page')) {
             return UserResource::collection(User::paginate(5));
         } else {
-            return UserResource::collection(User::all());
+            return UserResource::collection(User::all())->count();
         }
     }
 

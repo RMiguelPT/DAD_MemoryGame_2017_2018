@@ -22,6 +22,7 @@
           </div>
         <form action="#" method="get" id="id_form">
             <div>
+                <h2>Current Player : {{ nickName }}</h2>
                 <label for="idLines">Total Lines:</label>
                 <input type="text" id="idLines" name="Lines" v-model="totLines" v-bind:disabled="gameStarted">
                 <span class="error" id="msgError_Lines"></span>
@@ -85,6 +86,7 @@
                 failMessage: '',
                 gameEndedMessage: '',
                 showGameEndedMessage: false,
+                nickName: window.localStorage.getItem("userName")
 
             }
         },
@@ -146,6 +148,9 @@
             },
 
             clickPiece: function (index) {
+
+                
+
                 var piece = this.board[index];
                 if (!this.gameStarted || piece.flipped || piece.removed) return;
                 if (this.clickCounter == 0) {

@@ -10,6 +10,15 @@
                     <a v-show="game.gameEnded" v-on:click.prevent="closeGame">Close Game</a>
                 </strong>
                 <form action="#" method="get" id="id_form" v-if="game.player1==ownPlayerName">
+
+
+
+
+                    
+
+
+
+
                     <div>
                         <label for="idLines">Total Lines:</label>
                         <input type="text" id="idLines" name="Lines" v-model="game.totLines" v-bind:disabled="disableForm">
@@ -33,7 +42,9 @@
             <div class="container" v-if="game.gameStarted">
                     <div class="row">
                     <div class="col-sm-3 chatBox" v-bind:style="{ height: chatHeight }">
-                        <ul class="messages">                         
+                        <ul class="messages">  
+                            <!-- Chat MESSAGES -->                      
+                            <!-- <li v-for="message in messages">{{message.playerName}}: {{message.message}}</li> -->
                             <li v-for="message in messages">{{message.playerName}}: {{message.message}}</li>
                         </ul>
                     </div>
@@ -70,16 +81,19 @@
         data: function () {
             return {
                 input: "",
-                messages: []
+                messages: [],
+                pieceToFlip: undefined,
             }
         },
         sockets: {
             message_received(data) {
-
+                var date = new Date();
+                var formatedDate = date.getHours() + ":" + date.getMinutes();
                 if (this.game.gameID == data.gameID) {
                     let playerAndMessage = {
                         playerName: data.playerName,
-                        message: data.message
+                        message: data.message,
+                        time: Date.now(),
                     }
                     this.messages.push(playerAndMessage);
                 }
@@ -209,6 +223,8 @@
                 this.$parent.close(this.game);
             },
             startgame() {
+                console.log("player[0] name:" + this.game.players[0].playerName);
+                console.log("own:" + this.ownPlayerName);
                 this.$emit("start-game", this.game);
             },
             clickPiece(index) {
@@ -223,11 +239,16 @@
                 }
 
             },
+
+            
+
+
             sendMessage() {
                 let data = {
                     gameID: this.game.gameID,
                     playerName: this.ownPlayerName,
                     message: this.input
+                    
                 }
                 this.$emit("send-message", data);
                 this.input = "";
